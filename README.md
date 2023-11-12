@@ -8,67 +8,68 @@
 - [Latvian](README.lv.md)
 - [Russian](README.ru.md)
 
-## Описание проекта
+## Project Description
 
-Проект "AQM-Backend" представляет собой бэкэнд-приложение, разработанное с использованием фреймворка [Nest.js](https://github.com/nestjs/nest). Это приложение предназначено для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.
+The "AQM-Backend" project is a backend application developed using the [Nest.js](https://github.com/nestjs/nest) framework. This application is designed for interacting with the frontend, working with a database, and connecting to sensors on Raspberry Pi.
 
-## Описание проекта
+## Project Features
 
-- RESTful API для взаимодействия с фронтендом.
-- Использование выбранной базы данных (например, PostgreSQL, MongoDB, MySQL) для хранения данных приложения.
-- Подключение и взаимодействие с сенсорами на Raspberry Pi для сбора данных.
-- Легко расширяемая архитектура приложения благодаря Nest.js.
+- RESTful API for interacting with the frontend.
+- Use of a chosen database (e.g., PostgreSQL, MongoDB, MySQL) for storing application data.
+- Connection and interaction with sensors on Raspberry Pi for data collection.
+- Easily extensible application architecture thanks to Nest.js.
 
-## Требования
+## Requirements
 
-Перед началом работы у вас должны быть установлены следующие компоненты:
+Before getting started, you need to have the following components installed:
 
-- [Node.js](https://nodejs.org/en) (рекомендуется LTS-версия)
-- [npm](https://www.npmjs.com/) (устанавливается вместе с Node.js)
+- [Node.js](https://nodejs.org/en) (LTS version is recommended)
+- [npm](https://www.npmjs.com/) (installed together with Node.js)
 - [Nest.js](https://nestjs.com/)
 - [InfluxDB](https://www.influxdata.com/)
 - Raspberry Pi
 
-## Установка
+## Installation
 
-Склонируйте репозиторий:
+Clone the repository:
 
 ```bash
 $ git clone https://github.com/DAWN-LV/aqm-backend.git
-$ cd ваш-проект
+$ cd your-project
 ```
 
-Установите зависимости:
+Install dependencies:
 
 ```bash
 $ npm install
 ```
 
-## Конфигурация
+## Configuration
 
-Создайте файл .env в корне проекта и укажите в нем необходимые настройки, такие как параметры базы данных и настройки подключения к Raspberry Pi.
+Create a .env file in the project's root directory and specify the necessary settings such as database parameters and Raspberry Pi connection settings.
 
-Пример файла .env:
+Example .env file:
 
 ```bash
 DB_HOST=localhost
 DB_PORT=5432
-DB_USERNAME=ваш_логин
-DB_PASSWORD=ваш_пароль
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 ```
 
-## Запуск
+## Running
 
-Запустите бэкэнд сервера с помощью следующей команды:
+Start the backend server with the following command:
 
 ```bash
 $ npm run start
 ```
 
-По умолчанию, сервер будет запущен на порту 3000.
+By default, the server will run on port 3000.
 
-## Контакты
-Если у вас есть какие-либо вопросы или предложения, свяжитесь с нами:
+## Contact
+If you have any questions or suggestions, feel free to reach out to us:
 
 - Email: vitalijs.pankovs@gmail.com
-- Ссылка на GitHub: [GitHub](https://github.com/DAWN-LV)
+- GitHub Profile:: [GitHub](https://github.com/DAWN-LV)
+
