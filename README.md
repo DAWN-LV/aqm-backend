@@ -1,27 +1,71 @@
 <p align="center">
-    <a href="https://example.com" target="blank"><img src="логотип-вашего-проекта.png" width="200" alt="Логотип проекта" /></a>
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
-<h1 align="center">Название вашего проекта</h1>
 
-<p align="center">Описание вашего проекта. Это бэкэнд-приложение, разработанное с использованием фреймворка Nest.js, предназначенное для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.</p>
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-<h2 align="center">Основные возможности</h2>
+## Описание проекта
 
-<ul>
-    <li>RESTful API для взаимодействия с фронтендом.</li>
-    <li>Использование выбранной базы данных (например, PostgreSQL, MongoDB, MySQL) для хранения данных приложения.</li>
-    <li>Подключение и взаимодействие с сенсорами на Raspberry Pi для сбора данных.</li>
-    <li>Легко расширяемая архитектура приложения благодаря Nest.js.</li>
-</ul>
+Проект "AQM-Backend" представляет собой бэкэнд-приложение, разработанное с использованием фреймворка [Nest,js](https://github.com/nestjs/nest). Это приложение предназначено для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.
 
-<h2 align="center">Требования</h2>
+## Описание проекта
 
-<p>Перед началом работы у вас должны быть установлены следующие компоненты:</p>
+- RESTful API для взаимодействия с фронтендом.
+- Использование выбранной базы данных (например, PostgreSQL, MongoDB, MySQL) для хранения данных приложения.
+- Подключение и взаимодействие с сенсорами на Raspberry Pi для сбора данных.
+- Легко расширяемая архитектура приложения благодаря Nest.js.
 
-<ul>
-    <li><a href="https://nodejs.org/" target="_blank">Node.js</a> (рекомендуется LTS-версия)</li>
-    <li><a href="https://www.npmjs.com/" target="_blank">npm</a> (устанавливается вместе с Node.js)</li>
-    <li><a href="https://nestjs.com/" target="_blank">Nest.js</a></li>
-    <li>База данных (напишите здесь, какую базу данных вы используете, например, PostgreSQL, MongoDB, MySQL и т. д.)</li>
-    <li>Raspberry Pi (если вы используете Raspberry Pi для подключения к сенсорам)</li>
-</ul>
+## Требования
+
+Перед началом работы у вас должны быть установлены следующие компоненты:
+
+- [Node.js](https://nodejs.org/en) (рекомендуется LTS-версия)
+- [npm](https://www.npmjs.com/) (устанавливается вместе с Node.js)
+- [Nest.js](https://nestjs.com/)
+- [InfluxDB](https://www.influxdata.com/)
+- Raspberry Pi
+
+## Установка
+
+Склонируйте репозиторий:
+
+```bash
+$ git clone https://github.com/ваш-проект.git
+$ cd ваш-проект
+```
+
+Установите зависимости:
+
+```bash
+$ npm install
+```
+
+## Конфигурация
+
+Создайте файл .env в корне проекта и укажите в нем необходимые настройки, такие как параметры базы данных и настройки подключения к Raspberry Pi.
+
+Пример файла .env:
+
+```bash
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=ваш_логин
+DB_PASSWORD=ваш_пароль
+```
+
+## Запуск
+
+Запустите бэкэнд сервера с помощью следующей команды:
+
+```bash
+$ npm run start
+```
+
+По умолчанию, сервер будет запущен на порту 3000.
+
+## Контакты
+Если у вас есть какие-либо вопросы или предложения, свяжитесь с нами:
+
+Email: vitalijs.pankovs@gmail.com
+Ссылка на GitHub: [GitHub](https://github.com/DAWN-LV)
