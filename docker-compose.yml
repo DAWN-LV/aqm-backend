@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgresql:
+    image: postgres
+    container_name: seller_backend
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST=localhost
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DATABASE=seller
+    command: postgres
+    restart: always
+
+  redis:
+    image: redis:alpine3.14
+    container_name: redis-seller
+    ports:
+      - "6379-6379"
