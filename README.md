@@ -31,7 +31,7 @@
 Склонируйте репозиторий:
 
 ```bash
-$ git clone https://github.com/ваш-проект.git
+$ git clone https://github.com/DAWN-LV/aqm-backend.git
 $ cd ваш-проект
 ```
 
@@ -67,5 +67,5 @@ $ npm run start
 ## Контакты
 Если у вас есть какие-либо вопросы или предложения, свяжитесь с нами:
 
-Email: vitalijs.pankovs@gmail.com
-Ссылка на GitHub: [GitHub](https://github.com/DAWN-LV)
+- Email: vitalijs.pankovs@gmail.com
+- Ссылка на GitHub: [GitHub](https://github.com/DAWN-LV)
