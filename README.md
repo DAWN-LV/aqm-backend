@@ -71,5 +71,5 @@ By default, the server will run on port 3000.
 If you have any questions or suggestions, feel free to reach out to us:
 
 - Email: vitalijs.pankovs@gmail.com
-- GitHub Profile:: [GitHub](https://github.com/DAWN-LV)
+- GitHub Profile: [GitHub](https://github.com/DAWN-LV)
 
