@@ -1,5 +1,7 @@
 <p align="center">
-  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank"><img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="350" alt="AQM Logo" /></a>
+  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
+    <img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="350" alt="AQM Logo" style="margin-bottom: -100px;"/>
+  </a>
 </p>
 
 ## Language
