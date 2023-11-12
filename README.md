@@ -2,6 +2,12 @@
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank"><img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="350" alt="AQM Logo" /></a>
 </p>
 
+## Language
+
+- [English](README.md)
+- [Latvian](README.lv.md)
+- [Russian](README.ru.md)
+
 ## Описание проекта
 
 Проект "AQM-Backend" представляет собой бэкэнд-приложение, разработанное с использованием фреймворка [Nest.js](https://github.com/nestjs/nest). Это приложение предназначено для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.
