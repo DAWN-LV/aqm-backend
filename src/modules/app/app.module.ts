@@ -11,28 +11,28 @@ import config from '../../config'
 
 @Module({
   imports: [
-    AuthModule,
-    UsersModule,
-    TokenModule,
-    ConfigModule.forRoot({ 
-      isGlobal: true,
-      load: [config]
-    }),
-    SequelizeModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        dialect: 'postgres',
-        host: configService.get('db.host'),
-        port: configService.get('db.port'),
-        username: configService.get('db.user'),
-        password: configService.get('db.password'),
-        // database: configService.get('db.name'),
-        synchronize: true,
-        autoLoadModels: true,
-        models: [User]
-      })
-    })
+    // AuthModule,
+    // UsersModule,
+    // TokenModule,
+    // ConfigModule.forRoot({ 
+    //   isGlobal: true,
+    //   load: [config]
+    // }),
+    // SequelizeModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => ({
+    //     dialect: 'postgres',
+    //     host: configService.get('db.host'),
+    //     port: configService.get('db.port'),
+    //     username: configService.get('db.user'),
+    //     password: configService.get('db.password'),
+    //     // database: configService.get('db.name'),
+    //     synchronize: true,
+    //     autoLoadModels: true,
+    //     models: [User]
+    //   })
+    // })
   ],
   controllers: [AppController],
   providers: [AppService],
