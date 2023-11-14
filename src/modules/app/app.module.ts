@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
+import { SensorsModule } from '../sensors/sensors.module';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from '../users/users.module';
@@ -11,6 +12,7 @@ import config from '../../config'
 
 @Module({
   imports: [
+    SensorsModule,
     // AuthModule,
     // UsersModule,
     // TokenModule,
