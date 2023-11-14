@@ -4,7 +4,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { 
+    cors: { origin: 'http://localhost:5173' } 
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Base Server API')
