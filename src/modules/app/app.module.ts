@@ -16,10 +16,10 @@ import config from '../../config'
     // AuthModule,
     // UsersModule,
     // TokenModule,
-    // ConfigModule.forRoot({ 
-    //   isGlobal: true,
-    //   load: [config]
-    // }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      load: [ config ]
+    }),
     // SequelizeModule.forRootAsync({
     //   imports: [ConfigModule],
     //   inject: [ConfigService],

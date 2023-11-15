@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -7,8 +7,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class SensorsController {
   constructor(private readonly sensorsService: SensorsService) {}
 
-  @Get('')
+  @Get()
   findAll(): string {
     return this.sensorsService.findAll();
+  }
+
+  @Post()
+  writeTestData(): Promise<void> {
+    return this.sensorsService.writeTest();
   }
 }
