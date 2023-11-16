@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('sensors')
 @Controller('sensors')
@@ -10,6 +10,13 @@ export class SensorsController {
   @Get()
   findAll(): string {
     return this.sensorsService.findAll();
+  }
+
+  @Post('test')
+  @ApiResponse({ status: 200 })
+  test(@Body() dto: any) {
+    console.log('TEST', dto)
+    return dto
   }
 
   @Post()
