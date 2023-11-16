@@ -38,6 +38,6 @@ export class SensorsController {
       ],
     }
 
-    return dto;
+    return data;
   }
 }
