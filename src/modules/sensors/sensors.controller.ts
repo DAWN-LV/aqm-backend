@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -13,7 +13,7 @@ export class SensorsController {
   }
 
   @Post()
-  writeTestData(): Promise<void> {
-    return this.sensorsService.writeTest();
+  createSenson(@Body() dto: any): Promise<void> {
+    return dto;
   }
 }
