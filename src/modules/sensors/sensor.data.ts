@@ -1,10 +1,10 @@
 export default [
   {
-    ip: "192.168.0.1",
-    mac: "00:1A:2B:3C:4D:5E",
-    name: "sensor_1",
+    ip: '192.168.0.1',
+    mac: '00:1A:2B:3C:4D:5E',
+    name: 'sensor_1',
     threshold: 800,
-    status: "working",
+    status: 'working',
     setup_timing: 1637000000000,
     calculated_data: [
       { value: 111, epoch: 1637000000000 },
@@ -23,11 +23,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.2",
-    mac: "00:1A:2B:3C:4D:5F",
-    name: "sensor_2",
+    ip: '192.168.0.2',
+    mac: '00:1A:2B:3C:4D:5F',
+    name: 'sensor_2',
     threshold: 850,
-    status: "error",
+    status: 'error',
     setup_timing: 1637020000000,
     calculated_data: [
       { value: 321, epoch: 1637020000000 },
@@ -46,11 +46,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.3",
-    mac: "00:1A:2B:3C:4D:5G",
-    name: "sensor_3",
+    ip: '192.168.0.3',
+    mac: '00:1A:2B:3C:4D:5G',
+    name: 'sensor_3',
     threshold: 900,
-    status: "working",
+    status: 'working',
     setup_timing: 1637030000000,
     calculated_data: [
       { value: 111, epoch: 1637030000000 },
@@ -69,11 +69,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.4",
-    mac: "00:1A:2B:3C:4D:5H",
-    name: "sensor_4",
+    ip: '192.168.0.4',
+    mac: '00:1A:2B:3C:4D:5H',
+    name: 'sensor_4',
     threshold: 750,
-    status: "error",
+    status: 'error',
     setup_timing: 1637040000000,
     calculated_data: [
       { value: 321, epoch: 1637040000000 },
@@ -92,11 +92,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.5",
-    mac: "00:1A:2B:3C:4D:5I",
-    name: "sensor_5",
+    ip: '192.168.0.5',
+    mac: '00:1A:2B:3C:4D:5I',
+    name: 'sensor_5',
     threshold: 820,
-    status: "working",
+    status: 'working',
     setup_timing: 1637050000000,
     calculated_data: [
       { value: 111, epoch: 1637050000000 },
@@ -115,11 +115,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.6",
-    mac: "00:1A:2B:3C:4D:5J",
-    name: "sensor_6",
+    ip: '192.168.0.6',
+    mac: '00:1A:2B:3C:4D:5J',
+    name: 'sensor_6',
     threshold: 880,
-    status: "error",
+    status: 'error',
     setup_timing: 1637060000000,
     calculated_data: [
       { value: 321, epoch: 1637060000000 },
@@ -138,11 +138,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.7",
-    mac: "00:1A:2B:3C:4D:5K",
-    name: "sensor_7",
+    ip: '192.168.0.7',
+    mac: '00:1A:2B:3C:4D:5K',
+    name: 'sensor_7',
     threshold: 920,
-    status: "working",
+    status: 'working',
     setup_timing: 1637070000000,
     calculated_data: [
       { value: 111, epoch: 1637070000000 },
@@ -161,11 +161,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.8",
-    mac: "00:1A:2B:3C:4D:5L",
-    name: "sensor_8",
+    ip: '192.168.0.8',
+    mac: '00:1A:2B:3C:4D:5L',
+    name: 'sensor_8',
     threshold: 780,
-    status: "error",
+    status: 'error',
     setup_timing: 1637080000000,
     calculated_data: [
       { value: 321, epoch: 1637080000000 },
@@ -184,11 +184,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.9",
-    mac: "00:1A:2B:3C:4D:5M",
-    name: "sensor_9",
+    ip: '192.168.0.9',
+    mac: '00:1A:2B:3C:4D:5M',
+    name: 'sensor_9',
     threshold: 910,
-    status: "working",
+    status: 'working',
     setup_timing: 1637090000000,
     calculated_data: [
       { value: 111, epoch: 1637090000000 },
@@ -207,11 +207,11 @@ export default [
     ],
   },
   {
-    ip: "192.168.0.10",
-    mac: "00:1A:2B:3C:4D:5N",
-    name: "sensor_10",
+    ip: '192.168.0.10',
+    mac: '00:1A:2B:3C:4D:5N',
+    name: 'sensor_10',
     threshold: 790,
-    status: "error",
+    status: 'error',
     setup_timing: 1637100000000,
     calculated_data: [
       { value: 321, epoch: 1637100000000 },

@@ -1,6 +1,6 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { SensorsService } from './sensors.service';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post } from '@nestjs/common'
+import { SensorsService } from './sensors.service'
+import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('sensors')
 @Controller('sensors')
@@ -9,11 +9,6 @@ export class SensorsController {
 
   @Get()
   findAll(): string {
-    return this.sensorsService.findAll();
-  }
-
-  @Post()
-  writeTestData(): Promise<void> {
-    return this.sensorsService.writeTest();
+    return this.sensorsService.findAll()
   }
 }
