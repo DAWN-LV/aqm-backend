@@ -13,7 +13,7 @@ export class SensorsController {
   }
 
   @Post()
-  createSenson(@Body() dto: any): Promise<void> {
+  createSenson(@Body() dto: any) {
     const data =  {
       ip: dto.ip,
       mac: "00:1A:2B:3C:4D:5E",
