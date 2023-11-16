@@ -13,13 +13,13 @@ export class SensorsController {
   }
 
   @Post()
-  createSenson(@Body() dto: any) {
-    const data = {
+  createSensor(@Body() dto: any) {
+    const data =  {
       ip: dto.ip,
-      mac: '00:1A:2B:3C:4D:5E',
+      mac: "00:1A:2B:3C:4D:5E",
       name: dto.name,
       threshold: 800,
-      status: 'working',
+      status: "working",
       setup_timing: 1637000000000,
       calculated_data: [
         { value: 111, epoch: 1637000000000 },
