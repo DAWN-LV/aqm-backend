@@ -22,6 +22,7 @@ export class SensorsController {
   @Post()
   createSensor(@Body() dto: any) {
     const data =  {
+      id: 100,
       ip: dto.ip,
       mac: "00:1A:2B:3C:4D:5E",
       name: dto.name,

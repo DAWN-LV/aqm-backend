@@ -1,5 +1,6 @@
 export default [
   {
+    id: 1,
     ip: '192.168.0.1',
     mac: '00:1A:2B:3C:4D:5E',
     name: 'sensor_1',
@@ -23,6 +24,7 @@ export default [
     ],
   },
   {
+    id: 2,
     ip: '192.168.0.2',
     mac: '00:1A:2B:3C:4D:5F',
     name: 'sensor_2',
@@ -46,6 +48,7 @@ export default [
     ],
   },
   {
+    id: 3,
     ip: '192.168.0.3',
     mac: '00:1A:2B:3C:4D:5G',
     name: 'sensor_3',
@@ -69,6 +72,7 @@ export default [
     ],
   },
   {
+    id: 4,
     ip: '192.168.0.4',
     mac: '00:1A:2B:3C:4D:5H',
     name: 'sensor_4',
@@ -92,6 +96,7 @@ export default [
     ],
   },
   {
+    id: 5,
     ip: '192.168.0.5',
     mac: '00:1A:2B:3C:4D:5I',
     name: 'sensor_5',
@@ -115,6 +120,7 @@ export default [
     ],
   },
   {
+    id: 6,
     ip: '192.168.0.6',
     mac: '00:1A:2B:3C:4D:5J',
     name: 'sensor_6',
@@ -138,6 +144,7 @@ export default [
     ],
   },
   {
+    id: 7,
     ip: '192.168.0.7',
     mac: '00:1A:2B:3C:4D:5K',
     name: 'sensor_7',
@@ -161,6 +168,7 @@ export default [
     ],
   },
   {
+    id: 8,
     ip: '192.168.0.8',
     mac: '00:1A:2B:3C:4D:5L',
     name: 'sensor_8',
@@ -184,6 +192,7 @@ export default [
     ],
   },
   {
+    id: 9,
     ip: '192.168.0.9',
     mac: '00:1A:2B:3C:4D:5M',
     name: 'sensor_9',
@@ -207,6 +216,7 @@ export default [
     ],
   },
   {
+    id: 10,
     ip: '192.168.0.10',
     mac: '00:1A:2B:3C:4D:5N',
     name: 'sensor_10',
