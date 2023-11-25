@@ -10,15 +10,15 @@ import { AuthService } from './auth.service'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiResponse({ status: 201, type: UserDto })
-  @Post('register')
-  register(@Body() dto: UserDto): Promise<UserDto> {
-    return this.authService.registerUser(dto)
-  }
+  // @ApiResponse({ status: 201, type: UserDto })
+  // @Post('register')
+  // register(@Body() dto: UserDto): Promise<UserDto> {
+  //   return this.authService.registerUser(dto)
+  // }
 
-  @ApiResponse({ status: 200, type: UserResponse })
+  // @ApiResponse({ status: 200, type: UserResponse })
   @Post('login')
-  login(@Body() dto: LoginUserDto): Promise<UserResponse> {
-    return this.authService.loginUser(dto)
+  login(@Body() dto: LoginUserDto) {
+    return this.authService.login(dto)
   }
 }

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
-import { InfluxdbModule } from '../influxdb/influxdb.module'
+import { SequelizeModule } from '@nestjs/sequelize'
+import { User } from './models/user.model'
 
 @Module({
-  imports: [InfluxdbModule],
+  imports: [SequelizeModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],

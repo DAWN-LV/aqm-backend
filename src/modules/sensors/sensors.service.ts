@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common'
-
-import data from './sensor.data'
-import { InfluxdbService } from '../influxdb/influxdb.service'
-import { Point } from '@influxdata/influxdb-client'
+import { InjectModel } from '@nestjs/sequelize'
+import { CreateSensorDTO } from './dto/create-sensor.dto'
+import { Sensor } from './models/sensor.model'
 
 @Injectable()
 export class SensorsService {
-  constructor(private readonly influxdbService: InfluxdbService) {}
+  constructor(@InjectModel(Sensor) private readonly sensorRepository: typeof Sensor) {}
 
-  findAll(): any {
-    return data
+  async findAll() {
+    return await this.sensorRepository.findAll()
+  }
+
+  async createSensor(dto: CreateSensorDTO) {
+    try {
+      return await this.sensorRepository.create({ ...dto })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

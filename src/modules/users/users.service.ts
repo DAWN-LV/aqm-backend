@@ -1,38 +1,41 @@
 import { Point } from '@influxdata/influxdb-client'
-import { InfluxdbService } from '../influxdb/influxdb.service'
 import { Injectable } from '@nestjs/common'
 import { UserDto } from './dto/user.dto'
 import * as bcrypt from 'bcrypt'
+import { InjectModel } from '@nestjs/sequelize'
+import { User } from './models/user.model'
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly influxdbService: InfluxdbService) {}
+  constructor(@InjectModel(User) private readonly userRepository: typeof User) {}
 
   async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10)
   }
 
-  async findUserByEmail(email: string): Promise<UserDto> {
-    return this.influxdbService.findOne('users', { where: { email } })
+  async getUser(id: number) {
+    console.log("ID: " + id)
+    const user = await this.userRepository.findOne({ where: { id } })
+    console.log(user)
+    return user
   }
 
-  async findUserByEmailWithoutPassword(
-    email: string,
-  ): Promise<Omit<UserDto, 'password'>> {
-    return this.influxdbService.findOne('users', {
-      where: { email },
-      attributes: { exclude: ['password'] },
-    })
+  async findUserByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ where: { email } })
   }
 
-  async createUser(dto: UserDto): Promise<UserDto> {
-    const password = await this.hashPassword(dto.password)
-    const point = new Point('users')
-      .tag('email', dto.email)
-      .stringField('username', dto.username)
-      .stringField('password', password)
+  // async findUserByEmailWithoutPassword(
+  //   email: string,
+  // ): Promise<Omit<UserDto, 'password'>> {
+  //   return this.influxdbService.findOne('users', {
+  //     where: { email },
+  //     attributes: { exclude: ['password'] },
+  //   })
+  // }
 
-    await this.influxdbService.write(point)
+  async createUser(dto): Promise<UserDto> {
+    dto.password = await this.hashPassword(dto.password)
+    await this.userRepository.create(dto)
     return dto
   }
 

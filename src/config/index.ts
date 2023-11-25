@@ -5,9 +5,12 @@ export default () => ({
     expiresIn: parseInt(process.env.JWT_EXPIRESIN, 10) || 86000,
   },
   db: {
-    url: process.env.DB_URL,
-    token: process.env.DB_TOKEN,
-    bucket: process.env.DB_BUCKET,
-    org: process.env.DB_ORG,
+    influx: {
+      url: process.env.INFLUX_DB_URL,
+      token: process.env.INFLUX_DB_TOKEN,
+    },
+    postgres: {
+      uri: process.env.POSTGRESQL_DB_URI,
+    }
   },
 })
