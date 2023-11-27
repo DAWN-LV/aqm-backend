@@ -5,7 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize'
 import { Sensor } from './models/sensor.model'
 
 @Module({
-  imports: [SequelizeModule.forFeature([Sensor])],
+  imports: [ SequelizeModule.forFeature([Sensor]) ],
   controllers: [ SensorsController ],
   providers: [ SensorsService ],
 })
