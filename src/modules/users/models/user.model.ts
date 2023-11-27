@@ -5,7 +5,7 @@ export class User extends Model {
   @Column
   username: string
 
-  @Default("https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/user/avatar.png")
+  @Default("https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/user/avatar.png?raw=true")
   @Column
   avatar: string 
 
