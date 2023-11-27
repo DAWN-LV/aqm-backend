@@ -7,31 +7,31 @@ export default class InfluxQL {
   }
 
   from(measurement: string): InfluxQL {
-    this.parts.push(`FROM ${measurement}`);
+    this.parts.push(`FROM ${measurement}`)
     return this;
   }
 
   where(condition: string): InfluxQL {
-    this.parts.push(`WHERE ${condition}`);
+    this.parts.push(`WHERE ${condition}`)
     return this;
   }
 
   groupBy(field: string): InfluxQL {
-    this.parts.push(`GROUP BY ${field}`);
+    this.parts.push(`GROUP BY ${field}`)
     return this;
   }
 
   orderBy(field: string, direction: 'ASC' | 'DESC' = 'ASC'): InfluxQL {
-    this.parts.push(`ORDER BY ${field} ${direction}`);
+    this.parts.push(`ORDER BY ${field} ${direction}`)
     return this;
   }
 
   limit(n: number): InfluxQL {
-    this.parts.push(`LIMIT ${n}`);
+    this.parts.push(`LIMIT ${n}`)
     return this;
   }
 
   build(): string {
-    return this.parts.join(' ');
+    return this.parts.join(' ')
   }
 }

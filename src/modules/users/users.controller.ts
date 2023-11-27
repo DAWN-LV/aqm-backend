@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, UseGuards, Req, Delete, Get, Param, Post } from '@nestjs/common'
+import { Controller, Body, UseGuards, Req, Delete, Get, Param, Post } from '@nestjs/common'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UsersService } from './users.service'
 import { JwtGuard } from '../../guards/jwt.guard'
@@ -11,9 +11,11 @@ import { UserDto } from './dto/user.dto'
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @Get(':id')
-  async getUser(@Param() params: any) {
-    return this.userService.getUser(params.id)
+  @UseGuards(JwtGuard)
+  @Get()
+  async getUser(@Req() req) {
+    const user = req.user
+    return this.userService.getUser(user.id)
   }
 
   @Post()

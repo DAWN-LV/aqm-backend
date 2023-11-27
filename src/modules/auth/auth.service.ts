@@ -39,11 +39,12 @@ export class AuthService {
     }
 
     const { token, expiresAt } = await this.tokenService.generateJwtToken({
+      id: userByEmail.id,
       username: userByEmail.username,
       email: userByEmail.email
     })
 
-    return { userId: userByEmail.id, token, expiresAt }
+    return { token, expiresAt }
   } 
 
   // async loginUser(dto: LoginUserDto): Promise<UserResponse> {
