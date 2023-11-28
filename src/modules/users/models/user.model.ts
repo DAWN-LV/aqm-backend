@@ -1,17 +1,32 @@
-import { Model, Column, Table, Default } from "sequelize-typescript"
+import { Model, Column, Table, DataType, HasMany } from "sequelize-typescript"
+import { Sensor } from "src/modules/sensors/models/sensor.model"
+
+export enum UserRole {
+  STANDART = "standart",
+  ADMIN = "admin",
+  SUPERADMIN = "superadmin"
+}
 
 @Table
 export class User extends Model {
   @Column
   username: string
 
-  @Default("https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/user/avatar.png?raw=true")
   @Column
   avatar: string 
+
+  @Column({
+    type: DataType.ENUM(...Object.values(UserRole)),
+    defaultValue: UserRole.STANDART
+  })
+  role: "admin" | "user"
 
   @Column
   email: string
 
   @Column
   password: string
+
+  @HasMany(() => Sensor)
+  sensors: Sensor[]
 }

@@ -1,4 +1,5 @@
-import { Model, Column, Table } from "sequelize-typescript"
+import { Model, Column, Table, ForeignKey, BelongsTo } from "sequelize-typescript"
+import { User } from "src/modules/users/models/user.model"
 
 @Table
 export class Sensor extends Model {
@@ -16,4 +17,11 @@ export class Sensor extends Model {
 
   @Column
   status: string
+
+  @ForeignKey(() => User)
+  @Column
+  userId: number
+
+  @BelongsTo(() => User)
+  user: User
 }

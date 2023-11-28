@@ -30,10 +30,10 @@ export class UsersService {
   //   })
   // }
 
-  async createUser(dto): Promise<UserDto> {
+  async createUser(dto) {
     dto.password = await this.hashPassword(dto.password)
-    await this.userRepository.create(dto)
-    return dto
+    const user = await this.userRepository.create(dto)
+    return user
   }
 
   // async updateUser(email: string, dto: UpdateUserDto): Promise<UpdateUserDto> {
