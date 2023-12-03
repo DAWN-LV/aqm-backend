@@ -11,17 +11,12 @@
 - [Russian](README.ru.md)
 
 <details>
-  <summary>Модель проекта</summary>
+  <h2>Модель проекта</h2>
   
   <p align="center">
     Тест
   </p>
 </details>
-
-## Наши проекты
-
-- [Frontend](https://github.com/DAWN-LV/aqm-frontend)
-- [Raspberry pi client](https://github.com/PepeWarrior69/aqm-sensor-client)
 
 ## Описание проекта
 
@@ -81,6 +76,11 @@ $ npm run start
 ```
 
 По умолчанию, сервер будет запущен на порту 3000.
+
+## Наши проекты
+
+- [Frontend](https://github.com/DAWN-LV/aqm-frontend)
+- [Raspberry pi client](https://github.com/PepeWarrior69/aqm-sensor-client)
 
 ## Контакты
 Если у вас есть какие-либо вопросы или предложения, свяжитесь с нами:
