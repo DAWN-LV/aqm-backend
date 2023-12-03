@@ -14,9 +14,11 @@
   <summary>
     <h2>Модель проекта</h2>
   </summary>
-  
+
   <p align="center">
-    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Model.png?raw=true" width="350" alt="Model"/>
+    <a href="https://lucid.app/lucidchart/f50687e3-ca8d-4006-92a6-79743d0dfecf/edit?view_items=Xv1Sjn5sZt9H&invitationId=inv_160e4e53-1fce-4aa5-a0ea-1828c28fd23f" target="blank">
+      <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Model.png?raw=true" width="800" alt="Model"/>
+    </a>
   </p>
 </details>
 
