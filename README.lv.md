@@ -1,5 +1,7 @@
 <p align="center">
-  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank"><img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="350" alt="AQM Logo" /></a>
+  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo" />
+  </a>
 </p>
 
 ## Language
@@ -8,7 +10,7 @@
 - [Russian](README.ru.md)
 
 ## Projekta apraksts
-Projekts "AQM-Backend" ir aizmugurējais pielikums, kas izstrādāts, izmantojot [Nest.js](https://github.com/nestjs/nest) pamatu. Šis pielikums ir paredzēts mijiedarbībai ar priekšējo daļu, darbam ar datu bāzi un pieslēgšanās Raspberry Pi sensoriem.
+Projekts "atmo-sense-backend" ir aizmugurējais pielikums, kas izstrādāts, izmantojot [Nest.js](https://github.com/nestjs/nest) pamatu. Šis pielikums ir paredzēts mijiedarbībai ar priekšējo daļu, darbam ar datu bāzi un pieslēgšanās Raspberry Pi sensoriem.
 
 ## Projekta funkcijas
 - RESTful API mijiedarbībai ar priekšējo daļu.
@@ -29,7 +31,7 @@ Lai sāktu darbu, jums jābūt instalētām šādām sastāvdaļām:
 Noklonējiet repozitoriju:
 
 ```bash
-$ git clone https://github.com/DAWN-LV/aqm-backend.git
+$ git clone https://github.com/DAWN-LV/atmo-sense-backend.git
 $ cd jūsu-projekts
 ```
 

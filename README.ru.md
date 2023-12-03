@@ -1,16 +1,31 @@
 <p align="center">
-  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank"><img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="350" alt="AQM Logo" /></a>
+  <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo" />
+  </a>
 </p>
 
-## Language
+## Language / Valoda / Язык
 
 - [English](README.md)
 - [Latvian](README.lv.md)
 - [Russian](README.ru.md)
 
+<details>
+  <summary>Модель проекта</summary>
+  
+  <p align="center">
+    Тест
+  </p>
+</details>
+
+## Наши проекты
+
+- [Frontend](https://github.com/DAWN-LV/aqm-frontend)
+- [Raspberry pi client](https://github.com/PepeWarrior69/aqm-sensor-client)
+
 ## Описание проекта
 
-Проект "AQM-Backend" представляет собой бэкэнд-приложение, разработанное с использованием фреймворка [Nest.js](https://github.com/nestjs/nest). Это приложение предназначено для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.
+Проект "atmo-sense-backend" представляет собой бэкэнд-приложение, разработанное с использованием фреймворка [Nest.js](https://github.com/nestjs/nest). Это приложение предназначено для взаимодействия с фронтендом, работы с базой данных и подключения к сенсорам на Raspberry Pi.
 
 ## Описание проекта
 
@@ -34,7 +49,7 @@
 Склонируйте репозиторий:
 
 ```bash
-$ git clone https://github.com/DAWN-LV/aqm-backend.git
+$ git clone https://github.com/DAWN-LV/atmo-sense-backend.git
 $ cd ваш-проект
 ```
 

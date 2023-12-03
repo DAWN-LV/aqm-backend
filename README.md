@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
-    <img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="200" alt="AQM Logo"/>
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo" />
   </a>
 </p>
 
@@ -12,7 +12,7 @@
 
 ## Project Description
 
-The "AQM-Backend" project is a backend application developed using the [Nest.js](https://github.com/nestjs/nest) framework. This application is designed for interacting with the frontend, working with a database, and connecting to sensors on Raspberry Pi.
+The "atmo-sense-backend" project is a backend application developed using the [Nest.js](https://github.com/nestjs/nest) framework. This application is designed for interacting with the frontend, working with a database, and connecting to sensors on Raspberry Pi.
 
 ## Project Features
 
@@ -36,7 +36,7 @@ Before getting started, you need to have the following components installed:
 Clone the repository:
 
 ```bash
-$ git clone https://github.com/DAWN-LV/aqm-backend.git
+$ git clone https://github.com/DAWN-LV/atmo-sense-backend.git
 $ cd your-project
 ```
 
