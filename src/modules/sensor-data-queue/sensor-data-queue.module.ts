@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
-
-import { SensorDataQueueService } from './sensor-data-queue.service';
-import { SensorDataQueueController } from './sensor-data-queue.controller';
-import { SensorDataQueueConsumer } from './sensor-data-queue.consumer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { SensorDataQueueController } from './sensor-data-queue.controller';
 import { RedisProvider } from 'src/config/providers/redis.provider';
+import { InfluxdbModule } from '../influxdb/influxdb.module';
+
+import { InfluxdbService } from '../influxdb/influxdb.service';
+import { SensorDataQueueConsumer } from './sensor-data-queue.consumer';
+import { SensorDataQueueService } from './sensor-data-queue.service';
 
 @Module({
   imports: [
@@ -16,9 +19,10 @@ import { RedisProvider } from 'src/config/providers/redis.provider';
     }),
     BullModule.registerQueueAsync({
       name: 'SENSOR_DATA_QUEUE'
-    })
+    }),
+    InfluxdbModule,
   ],
   controllers: [SensorDataQueueController],
-  providers: [SensorDataQueueService, SensorDataQueueConsumer],
+  providers: [SensorDataQueueService, SensorDataQueueConsumer, InfluxdbService],
 })
 export class SensorDataQueueModule {}
