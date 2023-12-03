@@ -1,14 +1,8 @@
 <p align="center">
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
-    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo"/>
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="250" alt="AtmoSense Logo"/>
   </a>
 </p>
-
-## Language / Valoda / Язык
-
-- [English](README.md)
-- [Latvian](README.lv.md)
-- [Russian](README.ru.md)
 
 <details>
   <summary>
@@ -21,6 +15,12 @@
     </a>
   </p>
 </details>
+
+## Language / Valoda / Язык
+
+- [English](README.md)
+- [Latvian](README.lv.md)
+- [Russian](README.ru.md)
 
 ## Описание проекта
 
