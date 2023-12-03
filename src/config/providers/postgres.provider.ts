@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { User } from 'src/modules/users/models/user.model'
 import { Sensor } from 'src/modules/sensors/models/sensor.model'
+import { UserSensorRef } from 'src/modules/sensors/models/user-sensor-ref.model'
 
 @Injectable()
 export class PostgreSQLProvider implements SequelizeOptionsFactory {
@@ -19,7 +20,7 @@ export class PostgreSQLProvider implements SequelizeOptionsFactory {
       },
       synchronize: true,
       autoLoadModels: true,
-      models: [ User, Sensor ], 
+      models: [ User, Sensor, UserSensorRef ], 
     };
   }
 }

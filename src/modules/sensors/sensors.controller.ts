@@ -1,4 +1,4 @@
-import { Body, Controller, UseGuards, Get, Post, Req } from '@nestjs/common'
+import { Body, Controller, UseGuards, Get, Post, Req, Param, Delete } from '@nestjs/common'
 import { SensorsService } from './sensors.service'
 import { CreateSensorDTO } from './dto/create-sensor.dto'
 import { JwtGuard } from 'src/guards/jwt.guard'
@@ -17,5 +17,11 @@ export class SensorsController {
   @Post()
   createSensor(@Body() dto: CreateSensorDTO, @Req() { user }) {
     return this.sensorsService.createSensor(dto, user.id)
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete(":id")
+  deleteSensor(@Param("id") id: number, @Req() { user }) {
+    return this.sensorsService.deleteSensor(user.id, id)
   }
 }

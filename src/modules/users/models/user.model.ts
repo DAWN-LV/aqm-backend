@@ -1,5 +1,6 @@
-import { Model, Column, Table, DataType, HasMany } from "sequelize-typescript"
+import { Model, Column, Table, DataType, HasMany, BelongsToMany } from "sequelize-typescript"
 import { Sensor } from "src/modules/sensors/models/sensor.model"
+import { UserSensorRef } from "../../sensors/models/user-sensor-ref.model"
 
 export enum UserRole {
   STANDART = "standart",
@@ -27,6 +28,6 @@ export class User extends Model {
   @Column
   password: string
 
-  @HasMany(() => Sensor)
+  @BelongsToMany(() => Sensor, () => UserSensorRef)
   sensors: Sensor[]
 }

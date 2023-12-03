@@ -1,4 +1,5 @@
-import { Model, Column, Table, ForeignKey, BelongsTo } from "sequelize-typescript"
+import { Model, Column, Table, ForeignKey, HasMany, BelongsToMany } from "sequelize-typescript"
+import { UserSensorRef } from "src/modules/sensors/models/user-sensor-ref.model"
 import { User } from "src/modules/users/models/user.model"
 
 @Table
@@ -18,10 +19,6 @@ export class Sensor extends Model {
   @Column
   status: string
 
-  @ForeignKey(() => User)
-  @Column
-  userId: number
-
-  @BelongsTo(() => User)
-  user: User
+  @BelongsToMany(() => User, () => UserSensorRef)
+  users: User[]
 }
