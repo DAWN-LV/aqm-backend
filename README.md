@@ -1,8 +1,20 @@
 <p align="center">
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
-    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo" />
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="250" alt="AtmoSense Logo" />
   </a>
 </p>
+
+<details>
+  <summary>
+    <h2>Project Model</h2>
+  </summary>
+
+  <p align="center">
+    <a href="https://lucid.app/lucidchart/f50687e3-ca8d-4006-92a6-79743d0dfecf/edit?view_items=Xv1Sjn5sZt9H&invitationId=inv_160e4e53-1fce-4aa5-a0ea-1828c28fd23f" target="blank">
+      <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Model.png?raw=true" width="800" alt="Model"/>
+    </a>
+  </p>
+</details>
 
 ## Language
 
