@@ -11,7 +11,9 @@
 - [Russian](README.ru.md)
 
 <details>
-  <h2>Модель проекта</h2>
+  <summary>
+    <h2>Модель проекта</h2>
+  </summary>
   
   <p align="center">
     Тест
