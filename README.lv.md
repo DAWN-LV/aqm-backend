@@ -62,6 +62,11 @@ $ npm run start
 
 Pēc noklusējuma serveris tiks palaišanas portā 3000.
 
+## Mūsu projekti
+
+- [Frontend](https://github.com/DAWN-LV/aqm-frontend)
+- [Raspberry pi client](https://github.com/PepeWarrior69/aqm-sensor-client)
+
 ## Kontakti
 Ja jums ir jautājumi vai priekšlikumi, droši sazinieties ar mums:
 

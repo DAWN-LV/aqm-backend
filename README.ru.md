@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank">
-    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo" />
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Logo.png?raw=true" width="350" alt="AtmoSense Logo"/>
   </a>
 </p>
 
@@ -16,7 +16,7 @@
   </summary>
   
   <p align="center">
-    Тест
+    <img src="https://github.com/DAWN-LV/aqm-backend/raw/master/src/common/images/Model.png?raw=true" width="350" alt="Model"/>
   </p>
 </details>
 
