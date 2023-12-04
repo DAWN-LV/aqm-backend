@@ -2,7 +2,6 @@ import { InjectQueue, OnGlobalQueueCompleted, OnQueueActive, Process, Processor 
 import { Job, Queue } from "bull";
 import { AddSensorDataQueueDto } from "./dto/add-sensor-data-queue.dto";
 import { InfluxdbService } from "../influxdb/influxdb.service";
-import { Point } from "@influxdata/influxdb-client";
 
 @Processor('SENSOR_DATA_QUEUE')
 export class SensorDataQueueConsumer {
@@ -18,20 +17,20 @@ export class SensorDataQueueConsumer {
 
     // console.log('processSensorData: ', JSON.stringify(job.data, undefined, 4))
 
-    const points: Array<Point> = []
+    // const points: Array<Point> = []
 
-    Object.values(job.data.body).forEach(sensor => {
-      sensor.data.forEach(measurement => {
-        const point = new Point("test_measure_69")
-          .tag("mac", job.data.mac)
-          .tag("type", sensor.type)
-          // .stringField("ip", job.data.ip)
-          .intField("value", measurement.value)
-          .timestamp(measurement.ts)
+    // Object.values(job.data.body).forEach(sensor => {
+    //   sensor.data.forEach(measurement => {
+    //     const point = new Point("test_measure_69")
+    //       .tag("mac", job.data.mac)
+    //       .tag("type", sensor.type)
+    //       // .stringField("ip", job.data.ip)
+    //       .intField("value", measurement.value)
+    //       .timestamp(measurement.ts)
         
-        points.push(point)
-      })
-    })
+    //     points.push(point)
+    //   })
+    // })
 
     console.log("points length = ", points.length)
     // console.log("points = ", points)
