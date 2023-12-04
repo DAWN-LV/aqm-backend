@@ -1,42 +1,39 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { InfluxDB, FieldType, IPoint } from 'influx'
+import { InfluxDB, IPoint, IWriteOptions } from 'influx'
+import { testDataSchema } from './schema/influxdb.schema'
 
 @Injectable()
 export class InfluxdbService {
-    private client: InfluxDB
+  private client: InfluxDB
 
-    constructor() {
-      this.client = new InfluxDB({
-        host: "aqm-backend-influx-aqm-backend.a.aivencloud.com",
-        port: 12528,
-        database: "sensor_data",
-        username: "avnadmin",
-        protocol: "https",
-        password: "AVNS_7ZgMx2fVejqDPhIRmD2",
-        schema: [
-          {
-            measurement: "abc",
-            fields: { value: FieldType.FLOAT },
-            tags: [ "mac" ],
-          }
-        ]
-      })
-    }
+  constructor(private readonly configService: ConfigService) {
+    this.client = new InfluxDB({
+      host: this.configService.get('db.influx.host'),
+      port: this.configService.get('db.influx.port'),
+      protocol: this.configService.get('db.influx.protocol'),
+      database: this.configService.get('db.influx.database'),
+      username: this.configService.get('db.influx.username'),
+      password: this.configService.get('db.influx.password'),
+      schema: [
+        testDataSchema
+      ],
+    })
+  }
 
-    public write(options: Array<IPoint>) {
-      try {
-        return this.client.writePoints(options)
-      } catch (error) {
-        throw new BadRequestException(`InfluxDB Error: ${ error }`)
-      } 
+  public write(points: Array<IPoint>, options?: IWriteOptions) {
+    try {
+      return this.client.writePoints(points, options)
+    } catch (error) {
+      throw new BadRequestException(`InfluxDB Error: ${error}`)
     }
+  }
 
-    public read(query: string) {
-      try {
-        return this.client.query(query)
-      } catch (error) {
-        throw new BadRequestException(`InfluxDB Error: ${ error }`)
-      } 
+  public read(query: string) {
+    try {
+      return this.client.query(query)
+    } catch (error) {
+      throw new BadRequestException(`InfluxDB Error: ${error}`)
     }
+  }
 }
