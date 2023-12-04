@@ -32,14 +32,14 @@ export class SensorDataQueueConsumer {
     //   })
     // })
 
-    console.log("points length = ", points.length)
+    // console.log("points length = ", points.length)
     // console.log("points = ", points)
 
     // points.forEach(el => {
     //   console.log(el.toString())
     // })
 
-    await this.influxdbService.write(points)
+    // await this.influxdbService.write(points)
 
     return true
   }
