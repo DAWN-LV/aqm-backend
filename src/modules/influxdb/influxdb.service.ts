@@ -1,12 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { InfluxDB } from 'influx'
-
-interface WriteOptions {
-  measurement: string,
-  tags: Record<string, any>,
-  fields: Record<string, any>,
-}
+import { InfluxDB, FieldType, IPoint } from 'influx'
 
 @Injectable()
 export class InfluxdbService {
@@ -16,13 +10,33 @@ export class InfluxdbService {
       this.client = new InfluxDB({
         host: "aqm-backend-influx-aqm-backend.a.aivencloud.com",
         port: 12528,
-        database: "defaultdb",
+        database: "sensor_data",
         username: "avnadmin",
-        password: "AVNS_7ZgMx2fVejqDPhIRmD2"
+        protocol: "https",
+        password: "AVNS_7ZgMx2fVejqDPhIRmD2",
+        schema: [
+          {
+            measurement: "abc",
+            fields: { value: FieldType.FLOAT },
+            tags: [ "mac" ],
+          }
+        ]
       })
     }
 
-    public write(options: Array<WriteOptions>) {
-      return void this.client.writePoints(options)
+    public write(options: Array<IPoint>) {
+      try {
+        return this.client.writePoints(options)
+      } catch (error) {
+        throw new BadRequestException(`InfluxDB Error: ${ error }`)
+      } 
+    }
+
+    public read(query: string) {
+      try {
+        return this.client.query(query)
+      } catch (error) {
+        throw new BadRequestException(`InfluxDB Error: ${ error }`)
+      } 
     }
 }
