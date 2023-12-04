@@ -20,7 +20,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@influxdata/influxdb-client": "^1.33.2",
     "@nestjs/bull": "^10.0.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
@@ -34,6 +33,7 @@
     "bull": "^4.11.5",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "influx": "^5.9.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",

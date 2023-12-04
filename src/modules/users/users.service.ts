@@ -1,4 +1,3 @@
-import { Point } from '@influxdata/influxdb-client'
 import { Injectable } from '@nestjs/common'
 import { UserDto } from './dto/user.dto'
 import * as bcrypt from 'bcrypt'
