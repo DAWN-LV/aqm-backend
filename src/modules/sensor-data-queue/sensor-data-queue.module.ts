@@ -18,7 +18,10 @@ import { SensorDataQueueService } from './sensor-data-queue.service';
       useClass: RedisProvider,
     }),
     BullModule.registerQueueAsync({
-      name: 'SENSOR_DATA_QUEUE'
+      name: 'SENSOR_DATA_QUEUE',
+      useFactory: async () => ({
+        limiter: { max: 10, duration: 1000 } // have to configure this based on performance tests
+      })
     }),
     InfluxdbModule,
   ],
