@@ -6,8 +6,12 @@ export default () => ({
   },
   db: {
     influx: {
-      url: process.env.INFLUX_DB_URL,
-      token: process.env.INFLUX_DB_TOKEN,
+      host: process.env.INFLUX_DB_HOST,
+      port: parseInt(process.env.INFLUX_DB_PORT),
+      protocol: process.env.INFLUX_DB_PROTOCOL,
+      database: process.env.INFLUX_DB_NAME,
+      username: process.env.INFLUX_DB_USER,
+      password: process.env.INFLUX_DB_PASSWORD,
     },
     postgres: {
       uri: process.env.POSTGRESQL_DB_URI,
