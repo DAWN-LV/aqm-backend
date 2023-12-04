@@ -9,7 +9,13 @@ export class SensorDataQueueService {
   constructor(@InjectQueue('SENSOR_DATA_QUEUE') private readonly sensorDataQueue: Queue) {}
   
   async add(addSensorDataQueueDto: AddSensorDataQueueDto) {
-    this.sensorDataQueue.add(addSensorDataQueueDto)
+    this.sensorDataQueue.add(
+      addSensorDataQueueDto,
+      {
+        attempts: 3,
+        removeOnComplete: true,
+      }
+    )
 
     return { added: true }
   }
