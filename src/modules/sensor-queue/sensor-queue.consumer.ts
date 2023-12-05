@@ -31,8 +31,6 @@ export class SensorDataQueueConsumer {
         sensor.data.map(measurement => this.createPoint(sensor, measurement, job.data.mac))
       )
 
-      console.log("Points: " + JSON.stringify(points, undefined, 2))
-
       await this.influxdbService.write(points, { precision: 's' })
     } catch (error) {
       console.log(`Error during influxdbService.write for job ${ job.id }:`, error)
