@@ -18,6 +18,16 @@ export class InfluxdbService {
       password: this.configService.get('db.influx.password'),
       schema: [testSchema],
     })
+
+    this.client.ping(5_000).then(hosts => {
+      hosts.forEach(host => {
+        if (host.online) {
+          console.log(`${host.url.host} responded in ${host.rtt}ms running ${host.version})`)
+        } else {
+          console.log(`${host.url.host} is offline :(`)
+        }
+      })
+    })
   }
 
   public write(points: Array<IPoint>, options?: IWriteOptions) {
