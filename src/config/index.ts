@@ -7,7 +7,7 @@ export default () => ({
   db: {
     influx: {
       host: process.env.INFLUX_DB_HOST,
-      port: parseInt(process.env.INFLUX_DB_PORT),
+      port: parseInt(process.env.INFLUX_DB_PORT, 10) || 12528,
       protocol: process.env.INFLUX_DB_PROTOCOL,
       database: process.env.INFLUX_DB_NAME,
       username: process.env.INFLUX_DB_USER,
@@ -18,9 +18,9 @@ export default () => ({
     },
     redis: {
       host: process.env.REDIS_DB_HOST,
-      port: process.env.REDIS_DB_PORT,
+      port: parseInt(process.env.REDIS_DB_PORT, 10) || 12528,
       user: process.env.REDIS_DB_USER,
       password: process.env.REDIS_DB_PASSWORD,
-    }
+    },
   },
 })

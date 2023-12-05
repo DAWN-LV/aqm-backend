@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common'
 
 import { SequelizeModule } from '@nestjs/sequelize'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { PostgreSQLProvider } from '@/providers/postgres.provider'
 
-import { PostgreSQLProvider } from 'src/config/providers/postgres.provider'
-import { SensorsModule } from '../sensors/sensors.module'
-import { UsersModule } from '../users/users.module'
-import { TokenModule } from '../token/token.module'
-import { AuthModule } from '../auth/auth.module'
-import { SensorDataQueueModule } from '../sensor-data-queue/sensor-data-queue.module';
-import { InfluxdbModule } from '../influxdb/influxdb.module'
+import { SensorDataQueueModule } from '@/modules/sensor-queue/sensor-queue.module'
+import { SensorsModule } from '@/modules/sensor/sensors.module'
+import { UsersModule } from '@/modules/user/users.module'
+import { TokenModule } from '@/modules/token/token.module'
+import { AuthModule } from '@/modules/auth/auth.module'
+import { InfluxdbModule } from '@/modules/influxdb/influxdb.module'
 
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
+import { AppController } from '@/modules/app/app.controller'
+import { AppService } from '@/modules/app/app.service'
 
-import config from '../../config'
+import config from '@/config'
 
 @Module({
   imports: [

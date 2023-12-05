@@ -1,23 +1,27 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { CreateSensorDTO } from './dto/create-sensor.dto'
-import { Sensor } from './models/sensor.model'
-import { UserSensorRef } from './models/user-sensor-ref.model'
+
+import { Sensor } from '@/modules/sensor/models/sensor.model'
+import { User } from '@/modules/user/models/user.model'
+
+import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
+import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 
 @Injectable()
 export class SensorsService {
   constructor(
     @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
-    @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
+    @InjectModel(Sensor) private readonly userRepository: typeof User,
+    @InjectModel(Sensor) private readonly userSensorRefRepository: typeof UserSensorRef,
   ) {}
 
-  async findAll(userId: number) {
+  findAll(userId: number) {
     try {
-      return await this.userSensorRefRepository.findAll({ where: { userId } })
+      return this.userRepository.findAll({ where: { id: userId } })
     } catch (error) {
       throw new BadRequestException(`Error finding sensors: ${error.message}`)
     }
-  } 
+  }
 
   async deleteSensor(userId: number, sensorId: number) {
     try {
@@ -35,15 +39,16 @@ export class SensorsService {
   }
 
   // TODO
-  async updateSensor() {
-
-  }
+  async updateSensor() {}
 
   async createSensor(dto: CreateSensorDTO, userId: number) {
     try {
       const existingSensor = await this.findSensor({ ip: dto.ip })
       if (existingSensor) {
-        const existingRef = await this.findUserSensorRef(userId, existingSensor.id)
+        const existingRef = await this.findUserSensorRef(
+          userId,
+          existingSensor.id,
+        )
         if (existingRef) {
           throw new Error('This sensor is already linked to the user.')
         }
@@ -61,18 +66,22 @@ export class SensorsService {
   }
 
   private async findUserSensorRef(userId: number, sensorId: number) {
-    return await this.userSensorRefRepository.findOne({ where: { userId, sensorId } })
+    return await this.userSensorRefRepository.findOne({
+      where: { userId, sensorId },
+    })
   }
 
   private async createUserSensorRef(userId: number, sensorId: number) {
     return await this.userSensorRefRepository.create({ userId, sensorId })
   }
-  
+
   private async deleteUserSensorRef(userId: number, sensorId: number) {
-    return await this.userSensorRefRepository.destroy({ where: { userId, sensorId } })
+    return await this.userSensorRefRepository.destroy({
+      where: { userId, sensorId },
+    })
   }
 
   private async findSensor({ ...dto }) {
     return await this.sensorRepository.findOne({ where: { ...dto } })
-  } 
+  }
 }

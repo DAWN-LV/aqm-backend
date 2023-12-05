@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { InfluxDB, IPoint, IWriteOptions } from 'influx'
-import { testDataSchema } from './schema/influxdb.schema'
+import { ConfigService } from '@nestjs/config'
+
+import testSchema from '@/modules/influxdb/schema/test.schema'
 
 @Injectable()
 export class InfluxdbService {
@@ -15,9 +16,7 @@ export class InfluxdbService {
       database: this.configService.get('db.influx.database'),
       username: this.configService.get('db.influx.username'),
       password: this.configService.get('db.influx.password'),
-      schema: [
-        testDataSchema
-      ],
+      schema: [testSchema],
     })
   }
 

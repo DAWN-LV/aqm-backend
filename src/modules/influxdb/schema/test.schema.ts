@@ -1,10 +1,9 @@
-import { FieldType } from "influx";
+import { FieldType } from 'influx'
 
-export const testDataSchema = {
+export default ({
   measurement: 'test',
   fields: {
     value: FieldType.INTEGER,
   },
   tags: ['mac'],
-}
-
+})

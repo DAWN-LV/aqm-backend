@@ -13,6 +13,6 @@ export class TokenService {
     const payload = { user }
     const { secret, expiresIn } = this.configService.get('jwt')
     const token = this.jwtService.sign(payload, { secret, expiresIn })
-    return { token, expiresAt: Date.now() + (expiresIn * 1000) }
+    return { token, expiresAt: Date.now() + expiresIn * 1000 }
   }
 }

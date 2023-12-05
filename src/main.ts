@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { AppModule } from './modules/app/app.module'
+import { AppModule } from '@/modules/app/app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: { origin: "http://localhost:5173" },
+    cors: { origin: 'http://localhost:5173' },
   })
 
   app.setGlobalPrefix('api')
@@ -20,4 +20,5 @@ async function bootstrap() {
 
   await app.listen(3000)
 }
+
 bootstrap()

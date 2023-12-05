@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { UsersService } from '../users/users.service'
-import { TokenService } from '../token/token.service'
-import { LoginUserDto } from './dto/login-user.dto'
-import { Errors } from '../../common/const/errors'
-import { UserDto } from '../users/dto/user.dto'
 import * as bcrypt from 'bcrypt'
+
+import { UsersService } from '@/modules/user/users.service'
+import { TokenService } from '@/modules/token/token.service'
+
+import { LoginUserDto } from '@/modules/auth/dto/login-user.dto'
+import { UserDto } from '@/modules/user/dto/user.dto'
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
   async registerUser(dto: UserDto) {
     const userByEmail = await this.userService.findUserByEmail(dto.email)
     if (userByEmail) {
-      throw new BadRequestException(Errors.USER_EXIST_EMAIL)
+      throw new BadRequestException('A user with this email already exists')
     }
 
     const user = await this.userService.createUser(dto)
@@ -24,7 +25,7 @@ export class AuthService {
     const { token, expiresAt } = await this.tokenService.generateJwtToken({
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
     })
 
     return { token, expiresAt }
@@ -33,20 +34,23 @@ export class AuthService {
   async login(dto: LoginUserDto) {
     const userByEmail = await this.userService.findUserByEmail(dto.email)
     if (!userByEmail) {
-      throw new BadRequestException(Errors.USER_NOT_EXIST_EMAIL)
+      throw new BadRequestException('No user found with this email')
     }
 
-    const isValidPassword = await bcrypt.compare(dto.password, userByEmail.password)
+    const isValidPassword = await bcrypt.compare(
+      dto.password,
+      userByEmail.password,
+    )
     if (!isValidPassword) {
-      throw new BadRequestException(Errors.WRONG_DATA)
+      throw new BadRequestException('Invalid login credentials')
     }
 
     const { token, expiresAt } = await this.tokenService.generateJwtToken({
       id: userByEmail.id,
       username: userByEmail.username,
-      email: userByEmail.email
+      email: userByEmail.email,
     })
 
     return { token, expiresAt }
-  } 
+  }
 }
