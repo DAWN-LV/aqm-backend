@@ -20,6 +20,8 @@ export class SensorMiddleware implements NestMiddleware {
         throw new Error('Failed to connect to the sensor')
       }
 
+      console.log("DATA: " + JSON.stringify(data))
+
       req.body.sensorData = data
     } catch (error) {
       throw new BadRequestException('Failed to connect to the sensor')
