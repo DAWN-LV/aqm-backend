@@ -1,7 +1,6 @@
 import { IPoint } from 'influx'
-import { Job, Queue } from 'bull'
+import { Job } from 'bull'
 import {
-  InjectQueue,
   OnGlobalQueueCompleted,
   OnGlobalQueueDrained,
   OnQueueActive,
@@ -22,7 +21,6 @@ import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
 @Processor('sensor-queue')
 export class SensorDataQueueConsumer {
   constructor(
-    @InjectQueue('sensor-queue') private readonly sensorDataQueue: Queue, // ?
     private readonly influxdbService: InfluxdbService,
   ) {}
 
@@ -33,9 +31,11 @@ export class SensorDataQueueConsumer {
         sensor.data.map(measurement => this.createPoint(sensor, measurement, job.data.mac))
       )
 
+      console.log("Points: " + JSON.stringify(points, undefined, 2))
+
       await this.influxdbService.write(points, { precision: 's' })
     } catch (error) {
-      console.log(`Error during influxdbService.write for job ${job.id}:`, error)
+      console.log(`Error during influxdbService.write for job ${ job.id }:`, error)
       throw error
     }
 
@@ -44,12 +44,12 @@ export class SensorDataQueueConsumer {
 
   @OnQueueActive()
   onActive(job: Job<CreateSensorQueueDTO>) {
-    console.log(`Processing job ${job.id} of type ${ job.name } with mac=${ job.data.mac }`)
+    console.log(`Processing job ${ job.id } of type ${ job.name } with mac=${ job.data.mac }`)
   }
 
   @OnQueueWaiting()
   onWaiting(jobId: number | string) {
-    console.log(`Job with id=${jobId} is waiting`)
+    console.log(`Job with id=${ jobId } is waiting`)
   }
 
   @OnQueueError()
