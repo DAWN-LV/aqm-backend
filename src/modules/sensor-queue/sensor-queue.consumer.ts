@@ -29,7 +29,7 @@ export class SensorDataQueueConsumer {
   @Process()
   async handleJob(job: Job<CreateSensorQueueDTO>) {
     try {
-      const points = job.data.body.flatMap(sensor => 
+      const points = Object.values(job.data.body).flatMap(sensor => 
         sensor.data.map(measurement => this.createPoint(sensor, measurement, job.data.mac))
       )
 
