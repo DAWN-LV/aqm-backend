@@ -9,7 +9,7 @@ export class SensorMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const { ip } = req.body
 
-    const endpoint_url = 'http://' + location.hostname + '/api/sensor-queue'
+    const endpoint_url = 'http://40.68.14.121/api/sensor-queue'
     const platform = 'test_linux'
 
     try {
