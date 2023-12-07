@@ -8,11 +8,14 @@ import {
   Req,
   Param,
   Delete,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common'
 import { JwtGuard } from '@/guards/jwt.guard'
 import { SensorsService } from '@/modules/sensor/sensors.service'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
+import { ApiBearerAuth } from '@nestjs/swagger'
 
 @Controller('sensors')
 export class SensorsController {
@@ -50,5 +53,18 @@ export class SensorsController {
   @Delete(':id')
   deleteSensor(@Param('id') id: number, @Req() { user }) {
     return this.sensorsService.deleteSensor(user.id, id)
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  @Get(':id/data/query')
+  getSensorData(
+    @Req() { user },
+    @Param('id', ParseIntPipe) id: number,
+    @Query('aggregation') agg: string,
+    @Query('from', ParseIntPipe) from: number,
+    @Query('to', ParseIntPipe) to: number,
+  ) {
+    return this.sensorsService.getSensorData(user?.id, id, agg, from, to)
   }
 }

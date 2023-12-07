@@ -8,13 +8,15 @@ import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
+import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
 
 @Injectable()
 export class SensorsService {
   constructor(
     @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
     @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
-    private readonly sensorGateway: SensorGateway
+    private readonly sensorGateway: SensorGateway,
+    private readonly influxdbService: InfluxdbService
   ) {}
 
   async findAllBy(userId: number): Promise<Sensor[]> {
@@ -110,5 +112,40 @@ export class SensorsService {
     } catch (error) {
       throw new BadRequestException(`Error creating sensor: ${error.message}`)
     }
+  }
+
+  async getSensorData(user_id: number, sensor_id: number, agg: string, from: number, to: number) {
+    // console.log('user_id = ', user_id)
+    // console.log('sensor_id = ', sensor_id)
+    // console.log('agg = ', agg)
+    // console.log('from = ', from)
+    // console.log('to = ', to)
+
+    // https://docs.influxdata.com/influxdb/cloud/query-data/influxql/explore-data/time-and-timezone/#time-syntax - duration_literals => add validation
+    // from + to => add validation
+    // have to handel sql injection
+    const query = `
+      select
+        mean(value) as avg,
+        min(value) as min,
+        max(value) as max
+      from test 
+      where time > now() - ${from}s
+        and time < now() - ${to}s
+      group by time(${agg})
+      fill(none)
+      order by time desc
+      limit 5
+    `
+    const dbres: any = await this.influxdbService.read(query, true)
+
+    // transformation
+    dbres.results[0].series[0].values.forEach(el => {
+      console.log(el)
+      el[0] = new Date(el[0]).getTime() / 1000
+      el[1] = parseFloat( (el[1]).toFixed(2) )
+    })
+
+    return dbres
   }
 }
