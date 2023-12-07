@@ -38,8 +38,10 @@ export class InfluxdbService {
     }
   }
 
-  public read(query: string) {
+  public read(query: string, raw = false) {
     try {
+      if (raw) return this.client.queryRaw(query)
+
       return this.client.query(query)
     } catch (error) {
       throw new BadRequestException(`InfluxDB Error: ${error}`)
