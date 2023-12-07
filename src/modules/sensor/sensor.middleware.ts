@@ -9,20 +9,16 @@ export class SensorMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const { ip } = req.body
 
-    const endpoint_url = "http://40.68.14.121:3000/api"
-    const platform = "test_linux"
-    
-    console.log("IP: " + ip)
+    const endpoint_url = "http://127.0.0.1:3000/api/sensor-queue"
+    const platform = "test_windows"
 
     try {
-      const data = await this.getSensorData(ip, { endpoint_url, platform })
+      const data = await this.init(ip, { endpoint_url, platform })
       if (!data) {
         throw new Error('Failed to connect to the sensor')
       }
 
-      console.log("DATA: " + JSON.stringify(data))
-
-      req.body.sensorData = data
+      req["sensor"] = data
     } catch (error) {
       throw new BadRequestException('Failed to connect to the sensor')
     }
@@ -30,7 +26,7 @@ export class SensorMiddleware implements NestMiddleware {
     next()
   }
 
-  private getSensorData(ip: string, data?: any) {
-    return this.httpService.post(('http://' + ip + ':8000'), data)
+  private init(ip: string, data?: any) {
+    return this.httpService.post(('http://' + ip + ':8000/api/init'), data)
   }
 }

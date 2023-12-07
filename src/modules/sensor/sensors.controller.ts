@@ -18,14 +18,14 @@ export class SensorsController {
 
   @UseGuards(JwtGuard)
   @Get()
-  findAll(@Req() { user }) {
-    return this.sensorsService.findAll(user.id)
+  findAllBy(@Req() { user }) {
+    return this.sensorsService.findAllBy(user.id)
   }
 
   @UseGuards(JwtGuard)
   @Post()
-  createSensor(@Body() dto: CreateSensorDTO, @Req() { user }) {
-    return this.sensorsService.createSensor(dto, user.id)
+  createSensor(@Body() dto: CreateSensorDTO, @Req() { user, sensor: { mac } }) {
+    return this.sensorsService.createSensor(user.id, { ...dto, mac })
   }
 
   @UseGuards(JwtGuard)

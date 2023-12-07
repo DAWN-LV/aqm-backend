@@ -15,9 +15,9 @@ export class SensorsService {
     @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
   ) {}
 
-  findAll(userId: number) {
+  async findAllBy(userId: number): Promise<Sensor[]> {
     try {
-      return this.sensorRepository.findAll({
+      return await this.sensorRepository.findAll({
         include: [{
           model: User,
           where: { id: userId },
@@ -25,69 +25,52 @@ export class SensorsService {
         }]
       })
     } catch (error) {
-      throw new BadRequestException(`Error finding sensors: ${error.message}`)
+      throw new BadRequestException(`Error in finding sensor link: ${ error.message }`)
     }
   }
 
-  async deleteSensor(userId: number, sensorId: number) {
+  async deleteSensor(userId: number, sensorId: number): Promise<boolean> {
     try {
-      const existingRef = await this.findUserSensorRef(userId, sensorId)
-      if (!existingRef) {
+      const ref = await this.userSensorRefRepository.findOne({ where: { userId, sensorId } })
+
+      if (!ref) {
         throw new Error('The link between user and sensor does not exist.')
       }
 
-      await this.deleteUserSensorRef(userId, sensorId)
-
+      await ref.destroy()
       return true
     } catch (error) {
-      throw new BadRequestException(`Error in deleting sensor link: ${error.message}`)
+      throw new BadRequestException(`Error in deleting sensor link: ${ error.message }`)
     }
   }
 
   // TODO
   async updateSensor() {}
 
-  async createSensor(dto: CreateSensorDTO, userId: number) {
+  async createSensor(userId: number, { ip, name, mac }: CreateSensorDTO & { mac: string }): Promise<Sensor> {
     try {
-      const existingSensor = await this.findSensor({ ip: dto.ip })
-      if (existingSensor) {
-        const existingRef = await this.findUserSensorRef(
-          userId,
-          existingSensor.id,
-        )
-        if (existingRef) {
-          throw new Error('This sensor is already linked to the user.')
-        }
+      const [ instance, wasCreated ] = await this.sensorRepository.findOrCreate({
+        where: { ip },
+        defaults: { ip, name, mac }
+      })
 
-        await this.createUserSensorRef(userId, existingSensor.id)
-        return existingSensor
-      } else {
-        const newSensor = await this.sensorRepository.create({ ...dto })
-        await this.createUserSensorRef(userId, newSensor.id)
-        return newSensor
+      if (wasCreated) {
+        await this.userSensorRefRepository.create({ userId, sensorId: instance.id })
+        return instance
       }
+
+      const ref = await this.userSensorRefRepository.findOne({
+        where: { userId, sensorId: instance.id }
+      })
+
+      if (ref) {
+        throw new Error('This sensor is already linked to the user.')
+      }
+
+      await this.userSensorRefRepository.create({ userId, sensorId: instance.id })
+      return instance
     } catch (error) {
       throw new BadRequestException(`Error creating sensor: ${error.message}`)
     }
-  }
-
-  private async findUserSensorRef(userId: number, sensorId: number) {
-    return await this.userSensorRefRepository.findOne({
-      where: { userId, sensorId },
-    })
-  }
-
-  private async createUserSensorRef(userId: number, sensorId: number) {
-    return await this.userSensorRefRepository.create({ userId, sensorId })
-  }
-
-  private async deleteUserSensorRef(userId: number, sensorId: number) {
-    return await this.userSensorRefRepository.destroy({
-      where: { userId, sensorId },
-    })
-  }
-
-  private async findSensor({ ...dto }) {
-    return await this.sensorRepository.findOne({ where: { ...dto } })
   }
 }
