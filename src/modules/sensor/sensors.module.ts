@@ -5,10 +5,11 @@ import { SensorsService } from '@/modules/sensor/sensors.service'
 import { User } from '@/modules/user/models/user.model'
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
+import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 
 @Module({
   imports: [SequelizeModule.forFeature([Sensor, User, UserSensorRef])],
   controllers: [SensorsController],
-  providers: [SensorsService],
+  providers: [SensorsService, SensorGateway],
 })
 export class SensorsModule {}

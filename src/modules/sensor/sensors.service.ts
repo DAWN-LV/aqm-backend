@@ -4,15 +4,17 @@ import { InjectModel } from '@nestjs/sequelize'
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
 
-import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
+import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
+import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
+import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 
 @Injectable()
 export class SensorsService {
   constructor(
     @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
-    @InjectModel(User) private readonly userRepository: typeof User,
     @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
+    private readonly sensorGateway: SensorGateway
   ) {}
 
   async findAllBy(userId: number): Promise<Sensor[]> {
@@ -24,6 +26,20 @@ export class SensorsService {
           attributes: [],
         }]
       })
+    } catch (error) {
+      throw new BadRequestException(`Error in finding sensor link: ${ error.message }`)
+    }
+  }
+
+  async findOne(id: number): Promise<Sensor> {
+    try {
+      const sensor = await this.sensorRepository.findByPk(id)
+
+      if (!sensor) {
+        throw new Error('Sensor not found.')
+      }
+
+      return sensor
     } catch (error) {
       throw new BadRequestException(`Error in finding sensor link: ${ error.message }`)
     }
@@ -44,8 +60,30 @@ export class SensorsService {
     }
   }
 
-  // TODO
-  async updateSensor() {}
+  async updateSensor(userId: number, sensorId: number, dto: UpdateSensorDTO): Promise<Sensor> {
+    try {
+      const ref = await this.userSensorRefRepository.findOne({
+        where: { userId, sensorId }
+      })
+  
+      if (!ref) {
+        throw new Error('The link between user and sensor does not exist.')
+      }
+  
+      const sensor = await this.sensorRepository.findByPk(sensorId)
+      if (!sensor) {
+        throw new Error('Sensor not found.')
+      }
+
+      await sensor.update(dto)
+
+      this.sensorGateway.updateSensor(sensor.id)
+  
+      return sensor
+    } catch (error) {
+      throw new BadRequestException(`Error updating sensor: ${ error.message }`)
+    }
+  }
 
   async createSensor(userId: number, { ip, name, mac }: CreateSensorDTO & { mac: string }): Promise<Sensor> {
     try {
