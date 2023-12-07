@@ -6,7 +6,6 @@ import {
 } from 'sequelize-typescript'
 import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 import { User } from '@/modules/user/models/user.model'
-
 @Table
 export class Sensor extends Model<Sensor> {
   @Column

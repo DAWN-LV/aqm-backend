@@ -11,13 +11,19 @@ import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 export class SensorsService {
   constructor(
     @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
-    @InjectModel(Sensor) private readonly userRepository: typeof User,
-    @InjectModel(Sensor) private readonly userSensorRefRepository: typeof UserSensorRef,
+    @InjectModel(User) private readonly userRepository: typeof User,
+    @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
   ) {}
 
   findAll(userId: number) {
     try {
-      return this.userRepository.findAll({ where: { id: userId } })
+      return this.sensorRepository.findAll({
+        include: [{
+          model: User,
+          where: { id: userId },
+          attributes: [],
+        }]
+      })
     } catch (error) {
       throw new BadRequestException(`Error finding sensors: ${error.message}`)
     }

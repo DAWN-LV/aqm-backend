@@ -40,9 +40,9 @@ import config from '@/config'
   providers: [AppService, HttpService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(SensorMiddleware)
-      .forRoutes({ path: 'sensors', method: RequestMethod.POST })
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(SensorMiddleware)
+  //     .forRoutes({ path: 'sensors', method: RequestMethod.POST })
+  // }
 }
