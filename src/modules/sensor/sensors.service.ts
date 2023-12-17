@@ -146,6 +146,6 @@ export class SensorsService {
       el[1] = parseFloat( (el[1]).toFixed(2) )
     })
 
-    return dbres
+    return dbres.results[0].series[0]
   }
 }
