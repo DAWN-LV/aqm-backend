@@ -91,6 +91,8 @@ By default, the server will run on port 3000.
 - Aleksandrs Babulis
 - Vitalijs Pankovs
 - Karina Jodzevica
+- Aleksejs Ivanovs
+  
 ## Contact
 If you have any questions or suggestions, feel free to reach out to us:
 
