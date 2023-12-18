@@ -87,6 +87,10 @@ By default, the server will run on port 3000.
 - [Frontend](https://github.com/DAWN-LV/aqm-frontend)
 - [Raspberry pi client](https://github.com/PepeWarrior69/aqm-sensor-client)
 
+## Our Team
+- Aleksandrs Babulis
+- Vitalijs Pankovs
+
 ## Contact
 If you have any questions or suggestions, feel free to reach out to us:
 
