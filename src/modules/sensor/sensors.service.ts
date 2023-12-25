@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { ConfigService } from '@nestjs/config'
 
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
@@ -9,12 +10,15 @@ import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
+import { HttpService } from '@/modules/http/http.service'
 
 @Injectable()
 export class SensorsService {
   constructor(
     @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
     @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
     private readonly sensorGateway: SensorGateway,
     private readonly influxdbService: InfluxdbService
   ) {}
@@ -56,6 +60,15 @@ export class SensorsService {
       }
 
       await ref.destroy()
+
+      const links = await this.userSensorRefRepository.findAll({ where: { sensorId } })
+
+      if (links.length === 0) {
+        const sensor = await this.sensorRepository.findByPk(sensorId);
+
+        await this.deinit(sensor.ip)
+      }
+
       return true
     } catch (error) {
       throw new BadRequestException(`Error in deleting sensor link: ${ error.message }`)
@@ -87,8 +100,16 @@ export class SensorsService {
     }
   }
 
-  async createSensor(userId: number, { ip, name, mac }: CreateSensorDTO & { mac: string }): Promise<Sensor> {
+  async createSensor(userId: number, { ip, name }: CreateSensorDTO): Promise<Sensor> {
     try {
+      const { mac } = await this.init(ip)
+
+      console.log("MAC = " + mac)
+
+      if (!mac) {
+        throw new Error('Failed to connect to the sensor')
+      }
+
       const [ instance, wasCreated ] = await this.sensorRepository.findOrCreate({
         where: { ip },
         defaults: { ip, name, mac }
@@ -147,5 +168,20 @@ export class SensorsService {
     })
 
     return dbres.results[0].series[0]
+  }
+
+  private async init(ip: string): Promise<{ mac: string }> {
+    const params = {
+      endpoint_url: this.configService.get('sensor.endpointUrl'),
+      platform: this.configService.get('sensor.platform')
+    }
+
+    console.log("PARAMS = " + JSON.stringify(params))
+
+    return await this.httpService.post(`http://${ip}:8000/api/init`, params)
+  }
+
+  private async deinit(ip: string): Promise<void> {
+    return await this.httpService.post(`http://${ip}:8000/api/deinit`)
   }
 }

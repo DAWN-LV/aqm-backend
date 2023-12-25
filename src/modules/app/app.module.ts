@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 
 import { SequelizeModule } from '@nestjs/sequelize'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -11,10 +11,8 @@ import { TokenModule } from '@/modules/token/token.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { InfluxdbModule } from '@/modules/influxdb/influxdb.module'
 
-import { SensorMiddleware } from '@/modules/sensor/sensor.middleware'
 import { AppController } from '@/modules/app/app.controller'
 import { AppService } from '@/modules/app/app.service'
-import { HttpService } from '@/modules/http/http.service'
 
 import config from '@/config'
 
@@ -37,12 +35,6 @@ import config from '@/config'
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, HttpService],
+  providers: [AppService],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(SensorMiddleware)
-      .forRoutes({ path: 'sensors', method: RequestMethod.POST })
-  }
-}
+export class AppModule {}

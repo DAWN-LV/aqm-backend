@@ -35,8 +35,8 @@ export class SensorsController {
 
   @UseGuards(JwtGuard)
   @Post()
-  createSensor(@Body() dto: CreateSensorDTO, @Req() { user, sensor: { mac } }) {
-    return this.sensorsService.createSensor(user.id, { ...dto, mac })
+  createSensor(@Body() dto: CreateSensorDTO, @Req() { user }) {
+    return this.sensorsService.createSensor(user.id, dto)
   }
 
   @UseGuards(JwtGuard)
@@ -57,7 +57,7 @@ export class SensorsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get(':id/data/query')
+  @Get(':id/data')
   getSensorData(
     @Req() { user },
     @Param('id', ParseIntPipe) id: number,
