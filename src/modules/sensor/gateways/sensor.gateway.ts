@@ -3,7 +3,7 @@ import { Server } from 'socket.io'
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://40.68.14.121:5173',
+    origin: '*',
   }
 })
 export class SensorGateway {

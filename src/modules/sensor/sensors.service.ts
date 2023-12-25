@@ -135,39 +135,73 @@ export class SensorsService {
     }
   }
 
-  async getSensorData(user_id: number, sensor_id: number, agg: string, from: number, to: number) {
-    // console.log('user_id = ', user_id)
-    // console.log('sensor_id = ', sensor_id)
-    // console.log('agg = ', agg)
-    // console.log('from = ', from)
-    // console.log('to = ', to)
-
+  async getSensorData(userId: number, sensorId: number, from: number, to: number) {
     // https://docs.influxdata.com/influxdb/cloud/query-data/influxql/explore-data/time-and-timezone/#time-syntax - duration_literals => add validation
     // from + to => add validation
     // have to handel sql injection
-    const query = `
-      select
-        mean(value) as avg,
-        min(value) as min,
-        max(value) as max
-      from test 
-      where time > now() - ${from}s
-        and time < now() - ${to}s
-      group by time(${agg})
-      fill(none)
-      order by time desc
-      limit 5
-    `
-    const dbres: any = await this.influxdbService.read(query, true)
+    try {
+      const ref = await this.userSensorRefRepository.findOne({
+        where: { userId, sensorId }
+      })
 
-    // transformation
-    dbres.results[0].series[0].values.forEach(el => {
-      console.log(el)
-      el[0] = new Date(el[0]).getTime() / 1000
-      el[1] = parseFloat( (el[1]).toFixed(2) )
-    })
+      if (!ref) {
+        throw new Error('User does not have an access to this sensor')
+      }
 
-    return dbres.results[0].series[0]
+      const currentEpochSec = Date.now() / 1000
+      const aggregation = this.getAggregation(currentEpochSec - from, currentEpochSec - to)
+
+      const query = `
+        select
+          mean(value) as avg,
+          min(value) as min,
+          max(value) as max
+        from test 
+        where time > now() - ${from}s
+          and time < now() - ${to}s
+        group by time(${aggregation})
+        fill(none)
+        order by time desc
+      `
+      const dbres: any = await this.influxdbService.read(query, true)
+
+      if (dbres.results[0].error) {
+        throw new Error(`Influx error = ${dbres.results[0].error}`)
+      }
+
+      // transformation
+      dbres.results[0].series[0].values.forEach(el => {
+        console.log(el)
+        el[0] = new Date(el[0]).getTime() / 1000
+        el[1] = parseFloat( (el[1]).toFixed(2) )
+      })
+
+      return dbres.results[0].series[0]
+    } catch (error) {
+      throw new BadRequestException(`Error get sensor data: ${error.message}`)
+    }
+  }
+
+  private getAggregation(fromEpoch: number, toEpoch: number) {
+    const diff = toEpoch - fromEpoch
+    let aggregation = '1h'
+
+    const day = 86400
+    const week = day * 7
+    const month = day * 30
+    const halfYear = day * 30 * 6
+
+    if (diff < day) {
+      aggregation = '1m'
+    } else if (diff < week) {
+      aggregation = '5m'
+    } else if (diff < month) {
+      aggregation = '20m'
+    } else if (diff < halfYear) {
+      aggregation = '1h'
+    }
+
+    return aggregation
   }
 
   private async init(ip: string): Promise<{ mac: string }> {

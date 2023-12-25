@@ -28,7 +28,7 @@ export class SensorDataQueueConsumer {
   async handleJob(job: Job<CreateSensorQueueDTO>) {
     try {
       const points = Object.values(job.data.body).flatMap(sensor => 
-        sensor.data.map(measurement => this.createPoint(sensor, measurement, job.data.mac))
+        sensor.data.map(measurement => this.createPoint(sensor.type, measurement, job.data.mac))
       )
 
       await this.influxdbService.write(points, { precision: 's' })
@@ -90,9 +90,9 @@ export class SensorDataQueueConsumer {
     console.log('(Global) on completed: job ', jobId, ' -> result: ', result)
   }
 
-  private createPoint(sensor: SensorDataDTO, measurement: SensorMeasurementDTO, mac: string): IPoint {
+  private createPoint(type: string, measurement: SensorMeasurementDTO, mac: string): IPoint {
     return {
-      measurement: sensor.type,
+      measurement: type,
       tags: { mac },
       fields: { value: measurement.value },
       timestamp: measurement.ts,

@@ -61,10 +61,9 @@ export class SensorsController {
   getSensorData(
     @Req() { user },
     @Param('id', ParseIntPipe) id: number,
-    @Query('aggregation') agg: string,
     @Query('from', ParseIntPipe) from: number,
     @Query('to', ParseIntPipe) to: number,
   ) {
-    return this.sensorsService.getSensorData(user?.id, id, agg, from, to)
+    return this.sensorsService.getSensorData(user?.id, id, from, to)
   }
 }
