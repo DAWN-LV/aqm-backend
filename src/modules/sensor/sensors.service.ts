@@ -171,8 +171,7 @@ export class SensorsService {
 
       // transformation
       dbres.results[0].series[0].values.forEach(el => {
-        console.log(el)
-        el[0] = new Date(el[0]).getTime() / 1000
+        el[0] = new Date(el[0]).getTime()
         el[1] = parseFloat( (el[1]).toFixed(2) )
       })
 
