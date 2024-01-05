@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from '@/modules/auth/auth.service'
 
 import { LoginUserDto } from '@/modules/auth/dto/login-user.dto'
-import { UserDto } from '@/modules/user/dto/user.dto'
+import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -12,7 +12,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  register(@Body() dto: UserDto) {
+  register(@Body() dto: CreateUserDto) {
     return this.authService.registerUser(dto)
   }
 

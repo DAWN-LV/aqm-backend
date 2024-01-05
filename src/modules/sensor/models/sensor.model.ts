@@ -3,26 +3,66 @@ import {
   Column,
   Table,
   BelongsToMany,
+  DataType,
+  ForeignKey,
+  Length,
+  IsIP,
 } from 'sequelize-typescript'
-import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 import { User } from '@/modules/user/models/user.model'
+import { SensorStatus, SensorType } from '@/modules/sensor/types'
+
 @Table
 export class Sensor extends Model<Sensor> {
-  @Column
+  @Length({ min: 5, max: 25 })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false  
+  })
   name: string
 
-  @Column
+  @Column({ 
+    type: DataType.STRING 
+  })
+  color: string
+
+  @IsIP
+  @Column({
+    type: DataType.STRING,
+    allowNull: false
+  })
   ip: string
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: false
+  })
   mac: string
 
-  @Column
-  threshold: number
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false
+  })
+  gpioPin: number
 
-  @Column
-  status: string
+  @Column({
+    type: DataType.ENUM(...Object.values(SensorStatus)),
+  })
+  status: SensorStatus
 
-  @BelongsToMany(() => User, () => UserSensorRef)
-  users: User[]
+  @Column({
+    type: DataType.ENUM(...Object.values(SensorType)),
+    allowNull: false
+  })
+  type: SensorType
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false
+  })
+  @ForeignKey(() => User)
+  @Column
+  ownerId: number
+
+  @BelongsToMany(() => User, 'SensorMembers', 'sensorId', 'userId')
+  members: User[]
 }

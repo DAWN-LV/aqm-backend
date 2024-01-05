@@ -15,13 +15,15 @@ import {
   Processor,
 } from '@nestjs/bull'
 
-import { CreateSensorQueueDTO, SensorDataDTO, SensorMeasurementDTO } from '@/modules/sensor-queue/dto/create-sensor-queue.dto'
+import { CreateSensorQueueDTO, SensorMeasurementDTO } from '@/modules/sensor-queue/dto/create-sensor-queue.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
+import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 
 @Processor('sensor-queue')
 export class SensorDataQueueConsumer {
   constructor(
     private readonly influxdbService: InfluxdbService,
+    private readonly sensorGateway: SensorGateway,
   ) {}
 
   @Process()

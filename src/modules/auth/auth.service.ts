@@ -5,7 +5,7 @@ import { UsersService } from '@/modules/user/users.service'
 import { TokenService } from '@/modules/token/token.service'
 
 import { LoginUserDto } from '@/modules/auth/dto/login-user.dto'
-import { UserDto } from '@/modules/user/dto/user.dto'
+import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
 
 @Injectable()
 export class AuthService {
@@ -14,13 +14,13 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async registerUser(dto: UserDto) {
-    const userByEmail = await this.userService.findUserByEmail(dto.email)
+  async registerUser(dto: CreateUserDto) {
+    const userByEmail = await this.userService.findBy(dto.email)
     if (userByEmail) {
       throw new BadRequestException('A user with this email already exists')
     }
 
-    const user = await this.userService.createUser(dto)
+    const user = await this.userService.create(dto)
 
     const { token, expiresAt } = await this.tokenService.generateJwtToken({
       id: user.id,
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   async login(dto: LoginUserDto) {
-    const userByEmail = await this.userService.findUserByEmail(dto.email)
+    const userByEmail = await this.userService.findBy(dto.email)
     if (!userByEmail) {
       throw new BadRequestException('No user found with this email')
     }

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, MaxLength } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 
 export class UpdateSensorDTO {
-  @MaxLength(25)
+  @IsNotEmpty()
   @IsString()
   @ApiProperty()
   name: string

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { InfluxDB, IPoint, IWriteOptions } from 'influx'
+import { InfluxDB, IPoint, IResults, IWriteOptions } from 'influx'
 import { ConfigService } from '@nestjs/config'
 
 import testSchema from '@/modules/influxdb/schema/test.schema'
@@ -38,9 +38,11 @@ export class InfluxdbService {
     }
   }
 
-  public read(query: string, raw = false) {
+  public read<T>(query: string, raw = false): Promise<IResults<T>> {
     try {
-      if (raw) return this.client.queryRaw(query)
+      if (raw) {
+        return this.client.queryRaw(query)
+      }
 
       return this.client.query(query)
     } catch (error) {

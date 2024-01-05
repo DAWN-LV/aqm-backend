@@ -1,13 +1,31 @@
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, MaxLength } from 'class-validator'
+import { SensorType } from '@/modules/sensor/types'
+import { Transform } from 'class-transformer'
 
 export class CreateSensorDTO {
-  @MaxLength(25)
+  @IsNotEmpty()
   @IsString()
   @ApiProperty()
   name: string
 
+  @IsNotEmpty()
   @IsString()
   @ApiProperty()
   ip: string
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  color?: string
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  type: SensorType
+
+  @IsNumber({}, { message: 'gpioPin must be a number' })
+  @Transform(({ value }) => parseInt(value, 10))
+  @ApiProperty()
+  gpioPin: number
 }

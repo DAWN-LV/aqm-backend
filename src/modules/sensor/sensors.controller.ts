@@ -11,32 +11,33 @@ import {
   ParseIntPipe,
   Query,
 } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { JwtGuard } from '@/guards/jwt.guard'
 import { SensorsService } from '@/modules/sensor/sensors.service'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
-import { ApiBearerAuth } from '@nestjs/swagger'
 
+@ApiTags('sensors')
 @Controller('sensors')
 export class SensorsController {
   constructor(private readonly sensorsService: SensorsService) {}
 
   @UseGuards(JwtGuard)
   @Get()
-  findAllBy(@Req() { user }) {
-    return this.sensorsService.findAllBy(user.id)
+  findAll(@Req() { user }) {
+    return this.sensorsService.findAll(user.id)
   }
 
   @UseGuards(JwtGuard)
-  @Get(':id')
-  findOneBy(@Param('id') id: number) {
-    return this.sensorsService.findOne(id)
+  @Get(':sensorId')
+  findOne(@Param('sensorId') sensorId: number) {
+    return this.sensorsService.findOne(sensorId)
   }
 
   @UseGuards(JwtGuard)
   @Post()
   createSensor(@Body() dto: CreateSensorDTO, @Req() { user }) {
-    return this.sensorsService.createSensor(user.id, dto)
+    return this.sensorsService.create(user.id, dto)
   }
 
   @UseGuards(JwtGuard)
@@ -46,24 +47,23 @@ export class SensorsController {
     @Body() dto: UpdateSensorDTO, 
     @Req() { user }
   ) {
-    return this.sensorsService.updateSensor(user.id, sensorId, dto)
+    return this.sensorsService.update(user.id, sensorId, dto)
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
   deleteSensor(@Param('id') id: number, @Req() { user }) {
-    return this.sensorsService.deleteSensor(user.id, id)
+    return this.sensorsService.delete(user.id, id)
   }
 
-  @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get(':id/data')
+  @Get(':sensorId/data')
   getSensorData(
     @Req() { user },
-    @Param('id', ParseIntPipe) id: number,
+    @Param('sensorId', ParseIntPipe) sensorId: number,
     @Query('from', ParseIntPipe) from: number,
     @Query('to', ParseIntPipe) to: number,
   ) {
-    return this.sensorsService.getSensorData(user?.id, id, from, to)
+    return this.sensorsService.getData(user.id, sensorId, from, to)
   }
 }

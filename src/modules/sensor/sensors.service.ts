@@ -1,12 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { InjectModel } from '@nestjs/sequelize'
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
 
 import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
-import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
@@ -15,21 +13,20 @@ import { HttpService } from '@/modules/http/http.service'
 @Injectable()
 export class SensorsService {
   constructor(
-    @InjectModel(Sensor) private readonly sensorRepository: typeof Sensor,
-    @InjectModel(UserSensorRef) private readonly userSensorRefRepository: typeof UserSensorRef,
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
     private readonly sensorGateway: SensorGateway,
     private readonly influxdbService: InfluxdbService
   ) {}
 
-  async findAllBy(userId: number): Promise<Sensor[]> {
+  async findAll(userId: number): Promise<Sensor[]> {
     try {
-      return await this.sensorRepository.findAll({
+      return await Sensor.findAll({
         include: [{
           model: User,
-          where: { id: userId },
-          attributes: [],
+          as: 'members',
+          attributes: [], 
+          where: { id: userId }
         }]
       })
     } catch (error) {
@@ -37,36 +34,41 @@ export class SensorsService {
     }
   }
 
-  async findOne(id: number): Promise<Sensor> {
+  async findOne(sensorId: number): Promise<Sensor> {
     try {
-      const sensor = await this.sensorRepository.findByPk(id)
-
+      const sensor = await Sensor.findByPk(sensorId)
+  
       if (!sensor) {
-        throw new Error('Sensor not found.')
+        throw new NotFoundException(`Sensor with ID ${ sensorId } not found`)
       }
-
+  
       return sensor
     } catch (error) {
       throw new BadRequestException(`Error in finding sensor link: ${ error.message }`)
     }
   }
 
-  async deleteSensor(userId: number, sensorId: number): Promise<boolean> {
+  async delete(userId: number, sensorId: number): Promise<boolean> {
     try {
-      const ref = await this.userSensorRefRepository.findOne({ where: { userId, sensorId } })
-
-      if (!ref) {
-        throw new Error('The link between user and sensor does not exist.')
+      const sensor = await Sensor.findByPk(sensorId, {
+        include: [{ 
+          model: User,
+          as: 'members'
+        }]
+      })
+      if (!sensor) {
+        throw new NotFoundException('Sensor not found')
       }
 
-      await ref.destroy()
+      if (sensor.ownerId !== userId) {
+        throw new UnauthorizedException('You are not authorized to delete this sensor')
+      }
 
-      const links = await this.userSensorRefRepository.findAll({ where: { sensorId } })
+      await sensor.$remove('members', userId)
+      this.sensorGateway.delete(userId.toString(), { id: sensor.id })
 
-      if (links.length === 0) {
-        const sensor = await this.sensorRepository.findByPk(sensorId);
-
-        await this.deinit(sensor.ip)
+      if (sensor.members.length <= 0) {
+        this.deinit(sensor.ip)
       }
 
       return true
@@ -75,81 +77,69 @@ export class SensorsService {
     }
   }
 
-  async updateSensor(userId: number, sensorId: number, dto: UpdateSensorDTO): Promise<Sensor> {
+  async update(userId: number, sensorId: number, dto: UpdateSensorDTO): Promise<Sensor> {
     try {
-      const ref = await this.userSensorRefRepository.findOne({
-        where: { userId, sensorId }
-      })
-  
-      if (!ref) {
-        throw new Error('The link between user and sensor does not exist.')
-      }
-  
-      const sensor = await this.sensorRepository.findByPk(sensorId)
+      const sensor = await this.findOne(sensorId)
       if (!sensor) {
-        throw new Error('Sensor not found.')
+        throw new NotFoundException('Sensor not found')
       }
 
-      await sensor.update(dto)
+      if (sensor.ownerId !== userId) {
+        throw new UnauthorizedException('You are not the owner of this sensor')
+      }
 
-      this.sensorGateway.updateSensor(sensor.id)
-  
+      await sensor.update({ ...dto })
+      this.sensorGateway.update(userId.toString(), { id: sensor.id })
+
       return sensor
     } catch (error) {
       throw new BadRequestException(`Error updating sensor: ${ error.message }`)
     }
   }
 
-  async createSensor(userId: number, { ip, name }: CreateSensorDTO): Promise<Sensor> {
+  async create(userId: number, dto: CreateSensorDTO): Promise<Sensor> {
     try {
-      const { mac } = await this.init(ip)
-
-      console.log("MAC = " + mac)
+      const { mac } = await this.init(dto.ip)
 
       if (!mac) {
-        throw new Error('Failed to connect to the sensor')
+        throw new NotFoundException('Failed to connect to the sensor')
       }
+  
+      const sensor = await Sensor.findOne({ where: { ip: dto.ip } })
+  
+      if (sensor) {
+        if (sensor.ownerId !== userId) {
+          throw new UnauthorizedException('You are not the owner of this sensor')
+        }
 
-      const [ instance, wasCreated ] = await this.sensorRepository.findOrCreate({
-        where: { ip },
-        defaults: { ip, name, mac }
-      })
+        await sensor.$add('members', userId)
 
-      if (wasCreated) {
-        await this.userSensorRefRepository.create({ userId, sensorId: instance.id })
-        return instance
+        const newSensor = await sensor.update({ ...dto })
+        if (newSensor) {
+          this.sensorGateway.create(userId.toString(), { id: sensor.id })
+        }
+
+        return newSensor
       }
+      
+      const newSensor = await Sensor.create({ mac: mac, ownerId: userId, ...dto })
+      await newSensor.$add('members', userId)
 
-      const ref = await this.userSensorRefRepository.findOne({
-        where: { userId, sensorId: instance.id }
-      })
-
-      if (ref) {
-        throw new Error('This sensor is already linked to the user.')
-      }
-
-      await this.userSensorRefRepository.create({ userId, sensorId: instance.id })
-      return instance
+      return newSensor
     } catch (error) {
-      throw new BadRequestException(`Error creating sensor: ${error.message}`)
+      throw new BadRequestException(`Error creating sensor: ${ error.message }`)
     }
   }
 
-  async getSensorData(userId: number, sensorId: number, from: number, to: number) {
-    // https://docs.influxdata.com/influxdb/cloud/query-data/influxql/explore-data/time-and-timezone/#time-syntax - duration_literals => add validation
-    // from + to => add validation
-    // have to handel sql injection
+  async getData(userId: number, sensorId: number, from: number, to: number) {
     try {
-      const ref = await this.userSensorRefRepository.findOne({
-        where: { userId, sensorId }
-      })
-
-      if (!ref) {
-        throw new Error('User does not have an access to this sensor')
+      const sensor = await this.findOne(sensorId)
+      if (sensor.ownerId !== userId) {
+        throw new UnauthorizedException('You are not the owner of this sensor')
       }
 
-      const currentEpochSec = Date.now() / 1000
-      const aggregation = this.getAggregation(currentEpochSec - from, currentEpochSec - to)
+      const now = Date.now() / 1000
+      const aggregation = this.getAggregation(now - from, now - to)
 
       const query = `
         select
@@ -163,44 +153,29 @@ export class SensorsService {
         fill(none)
         order by time desc
       `
-      const dbres: any = await this.influxdbService.read(query, true)
+      const res = await this.influxdbService.read<{ time: string, avg: string, min: number, max: number }>(query, false)
 
-      if (dbres.results[0].error) {
-        throw new Error(`Influx error = ${dbres.results[0].error}`)
-      }
-
-      // transformation
-      dbres.results[0].series[0].values.forEach(el => {
-        el[0] = new Date(el[0]).getTime()
-        el[1] = parseFloat( (el[1]).toFixed(2) )
-      })
-
-      return dbres.results[0].series[0]
+      return res.map(data => ([
+        new Date(data.time).getTime(),
+        parseFloat(data.avg).toFixed(2),
+        data.min,
+        data.max
+      ]))
     } catch (error) {
       throw new BadRequestException(`Error get sensor data: ${error.message}`)
     }
   }
 
-  private getAggregation(fromEpoch: number, toEpoch: number) {
-    const diff = toEpoch - fromEpoch
-    let aggregation = '1h'
-
-    const day = 86400
-    const week = day * 7
-    const month = day * 30
-    const halfYear = day * 30 * 6
-
-    if (diff < day) {
-      aggregation = '1m'
-    } else if (diff < week) {
-      aggregation = '5m'
-    } else if (diff < month) {
-      aggregation = '20m'
-    } else if (diff < halfYear) {
-      aggregation = '1h'
+  private getAggregation(from: number, to: number) {
+    const diff = to - from
+    
+    switch (true) {
+      case diff < 86400: return '1m'
+      case diff < 604800: return '5m'
+      case diff < 2592000: return '20m'
+      case diff < 15552000: return '1h'
+      default: return '1d'
     }
-
-    return aggregation
   }
 
   private async init(ip: string): Promise<{ mac: string }> {
@@ -208,8 +183,6 @@ export class SensorsService {
       endpoint_url: this.configService.get('sensor.endpointUrl'),
       platform: this.configService.get('sensor.platform')
     }
-
-    console.log("PARAMS = " + JSON.stringify(params))
 
     return await this.httpService.post(`http://${ip}:8000/api/init`, params)
   }

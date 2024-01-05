@@ -2,39 +2,40 @@ import {
   Model,
   Column,
   Table,
+  Unique,
+  AllowNull,
+  Length,
   DataType,
-  BelongsToMany,
+  IsEmail,
 } from 'sequelize-typescript'
-
-import { Sensor } from '@/modules/sensor/models/sensor.model'
-import { UserSensorRef } from '@/modules/sensor/models/user-sensor-ref.model'
-
-export enum UserRole {
-  STANDART = 'standart',
-  ADMIN = 'admin',
-  SUPERADMIN = 'superadmin',
-}
 
 @Table
 export class User extends Model<User> {
-  @Column
+  @Unique
+  @AllowNull(false)
+  @Length({ min: 3, max: 50 })
+  @Column({
+    type: DataType.STRING,
+  })
   username: string
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+  })
   avatar: string
 
+  @Unique
+  @AllowNull(false)
+  @IsEmail
   @Column({
-    type: DataType.ENUM(...Object.values(UserRole)),
-    defaultValue: UserRole.STANDART,
+    type: DataType.STRING,
   })
-  role: string
-
-  @Column
   email: string
 
-  @Column
+  @AllowNull(false)
+  @Length({ min: 6 })
+  @Column({
+    type: DataType.STRING,
+  })
   password: string
-
-  @BelongsToMany(() => Sensor, () => UserSensorRef)
-  sensors: Sensor[]
 }

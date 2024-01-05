@@ -9,6 +9,7 @@ import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
 import { SensorDataQueueConsumer } from '@/modules/sensor-queue/sensor-queue.consumer'
 import { SensorQueueService } from '@/modules/sensor-queue/sensor-queue.service'
 import { SensorQueueController } from '@/modules/sensor-queue/sensor-queue.controller'
+import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { SensorQueueController } from '@/modules/sensor-queue/sensor-queue.contr
     }),
   ],
   controllers: [SensorQueueController],
-  providers: [SensorQueueService, SensorDataQueueConsumer, InfluxdbService],
+  providers: [
+    SensorQueueService, 
+    SensorDataQueueConsumer, 
+    InfluxdbService,
+    SensorGateway
+  ],
 })
 export class SensorDataQueueModule {}
