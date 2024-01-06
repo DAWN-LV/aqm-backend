@@ -100,7 +100,7 @@ export class SensorsService {
 
   async create(userId: number, dto: CreateSensorDTO): Promise<Sensor> {
     try {
-      const { mac } = await this.init(dto.ip)
+      const { data: { mac } } = await this.init(dto.ip)
 
       if (!mac) {
         throw new NotFoundException('Failed to connect to the sensor')
