@@ -4,7 +4,11 @@ import { Options, mande } from 'mande'
 @Global()
 @Injectable()
 export class HttpService {
-  public post<T>(url: string, data?: any, options?: Options<"json">) {
-    return mande(url).post<T>(data, options)
+  public async post<T>(url: string, data?: any, options?: Options<"json">) {
+    try {
+      return await mande(url).post<T>(data, options)
+    } catch (error) {
+      console.log("HTTP ERROR : " + error.message)
+    }
   }
 }
