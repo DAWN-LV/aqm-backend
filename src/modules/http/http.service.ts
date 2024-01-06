@@ -6,7 +6,9 @@ import { Options, mande } from 'mande'
 export class HttpService {
   public async post<T>(url: string, data?: any, options?: Options<"json">) {
     try {
-      return await mande(url).post<T>(data, options)
+      const res = await mande(url).post<T>(data, options)
+      console.log("RESULT = ", res)
+      return res
     } catch (error) {
       console.log("HTTP ERROR : " + error.message)
     }
