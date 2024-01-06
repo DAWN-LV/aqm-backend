@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { HttpService } from '@nestjs/axios'
 
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
@@ -8,7 +9,7 @@ import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
-import { HttpService } from '@/modules/http/http.service'
+import { AxiosResponse } from 'axios'
 
 @Injectable()
 export class SensorsService {
@@ -178,16 +179,16 @@ export class SensorsService {
     }
   }
 
-  private async init(ip: string): Promise<{ mac: string }> {
+  private async init(ip: string) {
     const params = {
       endpoint_url: this.configService.get('sensor.endpointUrl'),
       platform: this.configService.get('sensor.platform')
     }
 
-    return await this.httpService.post(`http://${ip}:8000/api/init`, params)
+    return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params)
   }
 
-  private async deinit(ip: string): Promise<void> {
-    return await this.httpService.post(`http://${ip}:8000/api/deinit`)
+  private async deinit(ip: string) {
+    return await this.httpService.axiosRef.post(`http://${ip}:8000/api/deinit`)
   }
 }
