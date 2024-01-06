@@ -6,7 +6,8 @@ import { Options, mande } from 'mande'
 export class HttpService {
   public async post<T>(url: string, data?: any) {
     try {
-      const res = await mande(url).post<T>(data)
+      const formData = new FormData(data)
+      const res = await mande(url).post<T>(formData)
       console.log("RESULT = ", res)
       return res
     } catch (error) {
