@@ -185,7 +185,7 @@ export class SensorsService {
       platform: this.configService.get('sensor.platform')
     }
 
-    return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params)
+    return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params, { timeout: 3_000 })
   }
 
   private async deinit(ip: string) {
