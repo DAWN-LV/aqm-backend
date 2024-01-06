@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { HttpService } from '@nestjs/axios'
+import { HttpModule } from '@nestjs/axios'
 
 import { SensorsController } from '@/modules/sensor/sensors.controller'
 
@@ -9,7 +9,8 @@ import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
 import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 
 @Module({
+  imports: [HttpModule],
   controllers: [SensorsController],
-  providers: [SensorsService, SensorGateway, InfluxdbService, HttpService],
+  providers: [SensorsService, SensorGateway, InfluxdbService],
 })
 export class SensorsModule {}

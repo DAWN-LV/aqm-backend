@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { JwtModule } from '@nestjs/jwt'
 
 import { SequelizeModule } from '@nestjs/sequelize'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -19,7 +20,6 @@ import { AppController } from '@/modules/app/app.controller'
 import { AppService } from '@/modules/app/app.service'
 
 import config from '@/config'
-import { JwtModule } from '@nestjs/jwt'
 
 @Module({
   imports: [
