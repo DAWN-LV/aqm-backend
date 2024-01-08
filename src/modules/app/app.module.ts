@@ -47,7 +47,7 @@ import { join } from 'path'
       useClass: PostgreSQLProvider,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
+      rootPath: join(__dirname, '..', '..', '..', '..', 'aqm-frontend', 'dist'),
     })
   ],
   controllers: [AppController],
