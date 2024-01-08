@@ -1,3 +1,4 @@
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 
@@ -20,6 +21,7 @@ import { AppController } from '@/modules/app/app.controller'
 import { AppService } from '@/modules/app/app.service'
 
 import config from '@/config'
+import { join } from 'path'
 
 @Module({
   imports: [
@@ -44,6 +46,9 @@ import config from '@/config'
       inject: [ConfigService],
       useClass: PostgreSQLProvider,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    })
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
