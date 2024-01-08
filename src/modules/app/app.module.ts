@@ -7,8 +7,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { PostgreSQLProvider } from '@/providers/postgres.provider'
 import { JWTProvider } from '@/providers/jwt.provider'
 
-import { AppGateway } from '@/modules/app/gateways/app.gateway'
-
 import { SensorDataQueueModule } from '@/modules/sensor-queue/sensor-queue.module'
 import { SensorsModule } from '@/modules/sensor/sensors.module'
 import { UsersModule } from '@/modules/user/users.module'
@@ -51,6 +49,6 @@ import { join } from 'path'
     })
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway],
+  providers: [AppService],
 })
 export class AppModule {}
