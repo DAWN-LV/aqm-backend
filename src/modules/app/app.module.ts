@@ -16,6 +16,7 @@ import { InfluxdbModule } from '@/modules/influxdb/influxdb.module'
 import { GroupModule } from '@/modules/group/group.module'
 
 import { AppController } from '@/modules/app/app.controller'
+import { AppGateway } from '@/modules/app/gateways/app.gateway'
 import { AppService } from '@/modules/app/app.service'
 
 import config from '@/config'
@@ -49,6 +50,6 @@ import { join } from 'path'
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}
