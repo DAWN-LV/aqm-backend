@@ -49,4 +49,12 @@ export class InfluxdbService {
       throw new BadRequestException(`InfluxDB Error: ${error}`)
     }
   }
+
+  public getMeasurement() {
+    return this.client.getMeasurements(this.configService.get('db.influx.database'))
+  }
+
+  public getSeries() {
+    return this.client.getSeries({ measurement: 'test', database: this.configService.get('db.influx.database') })
+  }
 }
