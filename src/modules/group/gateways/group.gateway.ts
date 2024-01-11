@@ -10,15 +10,15 @@ export class GroupGateway {
   @WebSocketServer()
   server: Server
 
-  create(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('GROUP', { type: 'CREATE', data})
+  create(data: { id: number }) {
+    this.server.emit('GROUP', { type: 'CREATE', data})
   }
 
-  update(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('GROUP', { type: 'UPDATE', data })
+  update(data: { id: number }) {
+    this.server.emit('GROUP', { type: 'UPDATE', data })
   }
 
-  delete(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('GROUP', { type: 'DELETE', data })
+  delete(data: { id: number }) {
+    this.server.emit('GROUP', { type: 'DELETE', data })
   }
 }

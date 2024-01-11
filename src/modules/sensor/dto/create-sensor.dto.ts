@@ -11,6 +11,7 @@ export class CreateSensorDTO {
 
   @IsNotEmpty()
   @IsString()
+  @IsMACAddress()
   @ApiProperty()
   mac: string
 

@@ -4,10 +4,6 @@ export default () => ({
     secret: process.env.JWT_SECRET,
     expiresIn: parseInt(process.env.JWT_EXPIRESIN, 10) || 86000,
   },
-  sensor: {
-    endpointUrl: process.env.ENDPOINT_URL,
-    platform: process.env.PLATFORM,
-  },
   db: {
     influx: {
       host: process.env.INFLUX_DB_HOST,

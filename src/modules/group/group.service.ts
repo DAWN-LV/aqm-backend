@@ -97,7 +97,7 @@ export class GroupService {
       }
 
       await group.update(dto)
-      this.groupGateway.update(userId.toString(), { id: group.id })
+      this.groupGateway.update({ id: group.id })
 
       if (dto.sensorIds) {
         const sensorIds = dto.sensorIds.split(',').map(id => parseInt(id.trim(), 10))
@@ -126,7 +126,7 @@ export class GroupService {
       }
 
       await group.destroy()
-      this.groupGateway.delete(userId.toString(), { id: group.id })
+      this.groupGateway.delete({ id: group.id })
 
       return true
     } catch (error) {
