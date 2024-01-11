@@ -152,7 +152,7 @@ export class SensorsService {
           mean(value) as avg,
           min(value) as min,
           max(value) as max
-        from ${sensor.dataValues.type} 
+        from ${sensor.dataValues.type.toLowerCase()} 
         where mac = '${sensor.dataValues.mac}'
           and time > now() - ${from}s
           and time < now() - ${to}s

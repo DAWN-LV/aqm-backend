@@ -93,9 +93,6 @@ export class SensorDataQueueConsumer {
   }
 
   private createPoint(type: string, measurement: SensorMeasurementDTO, mac: string): IPoint {
-    console.log('createPoint mac = ', mac)
-    console.log('createPoint type = ', type)
-    console.log('createPoint measurement = ', measurement)
     return {
       measurement: type,
       tags: { mac },
