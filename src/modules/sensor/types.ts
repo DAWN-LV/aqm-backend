@@ -1,11 +1,15 @@
-
 export enum SensorStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
-  ERROR = 'ERROR',
-  OFFLINE = 'OFFLINE'
+  RESTARTING = 'RESTARTING',
 }
 
 export enum SensorType {
-  DIGITAL = 'DIGITAL',
+  CO2 = 'CO2',
+  GAS = 'GAS',
+  MOTION = 'MOTION',
+  TEMPERATURE = 'TEMPERATURE',
+  PRESSURE = 'PRESSURE',
+  SMOKE = 'SMOKE',
+  TEST = 'TEST'
 }

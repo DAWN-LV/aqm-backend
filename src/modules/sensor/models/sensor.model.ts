@@ -28,7 +28,7 @@ export class Sensor extends Model<Sensor> {
   @IsIP
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: true
   })
   ip: string
 

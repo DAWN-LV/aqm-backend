@@ -5,13 +5,15 @@ export default [
     threshold: 700,
     min: 0,
     max: 2000,
+    enabled: true,
   },
   {
     id: 1,
     type: "GAS",
-    threshold: undefined,
+    threshold: 1,
     min: 0,
     max: 1,
+    enabled: true,
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ export default [
     threshold: 0,
     min: 0,
     max: 1,
+    enabled: true,
   },
   {
     id: 3,
@@ -26,6 +29,7 @@ export default [
     threshold: 24, 
     min: -50,
     max: 50,
+    enabled: false,
   },
   {
     id: 4,
@@ -33,6 +37,7 @@ export default [
     threshold: 1013,
     min: 800,
     max: 1200,
+    enabled: false,
   },
   {
     id: 5,
@@ -40,5 +45,14 @@ export default [
     threshold: 1, 
     min: 0,
     max: 10,
+    enabled: false,
+  },
+  {
+    id: 5,
+    type: "TEST",
+    threshold: 1000, 
+    min: 0,
+    max: 2000,
+    enabled: true,
   }
 ]

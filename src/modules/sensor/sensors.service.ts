@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { HttpService } from '@nestjs/axios'
 
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
@@ -17,7 +16,6 @@ import templates from '@/modules/sensor/static/templates.data'
 @Injectable()
 export class SensorsService {
   constructor(
-    private readonly configService: ConfigService,
     private readonly sensorGateway: SensorGateway,
     private readonly influxdbService: InfluxdbService,
     private readonly mqttService: MqttService
@@ -79,7 +77,7 @@ export class SensorsService {
 
       const membersCount = await sensor.$count('members')
       if (membersCount <= 0) {
-        this.deinit()
+        this.deinit(sensor.mac)
       }
 
       return true
@@ -113,7 +111,6 @@ export class SensorsService {
       await this.init(dto.mac)
   
       const sensor = await Sensor.findOne({ where: { mac: dto.mac } })
-  
       if (sensor) {
         if (sensor.ownerId !== userId) {
           throw new UnauthorizedException('You are not the owner of this sensor')
@@ -187,23 +184,14 @@ export class SensorsService {
   }
 
   private async init(mac: string) {
-    const params = {
-      endpoint_url: this.configService.get('sensor.endpointUrl'),
-      platform: this.configService.get('sensor.platform')
-    }
-
     const record = new MqttRecordBuilder()
       .setData('http://51.124.188.239:3000/api/sensor-queue|test_windows')
       .build()
 
-    this.mqttService.emit(`sensor/72:e5:ca:95:2a:54/init`, record.data)
-    // return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params, { timeout: 3_000 })
+    this.mqttService.emit(`sensor/${mac}/init`, record.data)
   }
   
-  private async deinit() {
-    console.log("DEINIT [72:e5:ca:95:2a:54]")
-    this.mqttService.emit(`sensor/72:e5:ca:95:2a:54/deinit`, 'deinit')
-    
-    // return await this.httpService.axiosRef.post(`http://${ip}:8000/api/deinit`)
+  private async deinit(mac: string) {
+    this.mqttService.emit(`sensor/${mac}/deinit`, 'deinit')
   }
 }
