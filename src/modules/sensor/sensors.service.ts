@@ -73,7 +73,7 @@ export class SensorsService {
       }
       
       await sensor.$remove('members', userId)
-      this.sensorGateway.delete(String(userId), { id: sensor.id })
+      this.sensorGateway.delete({ id: sensor.id })
 
       const membersCount = await sensor.$count('members')
       if (membersCount <= 0) {
@@ -98,7 +98,7 @@ export class SensorsService {
       }
 
       await sensor.update({ ...dto })
-      this.sensorGateway.update(String(userId), { id: sensor.id })
+      this.sensorGateway.update({ id: sensor.id })
 
       return sensor
     } catch (error) {
@@ -120,7 +120,7 @@ export class SensorsService {
 
         const newSensor = await sensor.update({ ...dto })
         if (newSensor) {
-          this.sensorGateway.create(String(userId), { id: sensor.id })
+          this.sensorGateway.create({ id: sensor.id })
         }
 
         return newSensor

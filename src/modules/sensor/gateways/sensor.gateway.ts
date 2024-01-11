@@ -10,16 +10,16 @@ export class SensorGateway {
   @WebSocketServer()
   server: Server
 
-  create(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('SENSOR', { type: "CREATE", data })
+  create(data: { id: number }) {
+    this.server.emit('SENSOR', { type: "CREATE", data })
   }
 
-  update(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('SENSOR', { type: "UPDATE", data })
+  update(data: { id: number }) {
+    this.server.emit('SENSOR', { type: "UPDATE", data })
   }
 
-  delete(userId: string, data: { id: number }) {
-    this.server.to(userId).emit('SENSOR', { type: "DELETE", data })
+  delete(data: { id: number }) {
+    this.server.emit('SENSOR', { type: "DELETE", data })
   }
 
   updateData(data: { [key: string]: { value: number, ts: number } }) {
