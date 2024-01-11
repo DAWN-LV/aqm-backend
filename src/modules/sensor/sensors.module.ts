@@ -8,7 +8,7 @@ import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
 
 import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 
-import { MqttModule } from '@/modules/sensor/mqtt/mqtt.module'
+import { MqttModule } from '@/modules/mqtt/mqtt.module'
 
 @Module({
   imports: [HttpModule, MqttModule],

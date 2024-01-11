@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsMACAddress, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { SensorType } from '@/modules/sensor/types'
 import { Transform } from 'class-transformer'
@@ -12,7 +12,7 @@ export class CreateSensorDTO {
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
-  ip: string
+  mac: string
 
   @IsOptional()
   @IsString()

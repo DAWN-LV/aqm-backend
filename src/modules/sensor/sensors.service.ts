@@ -9,19 +9,28 @@ import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
-import { MqttService } from './mqtt/mqtt.service'
 import { MqttRecordBuilder } from '@nestjs/microservices'
+import { MqttService } from '@/modules/mqtt/mqtt.service'
+
+import templates from '@/modules/sensor/static/templates.data'
 
 @Injectable()
 export class SensorsService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService,
     private readonly sensorGateway: SensorGateway,
     private readonly influxdbService: InfluxdbService,
     private readonly mqttService: MqttService
   ) {}
-
+  
+  getTemplates() {
+    try {
+      return templates
+    } catch (error) {
+      throw new BadRequestException(`Error in getting templates: ${ error.message }`)
+    }
+  }
+  
   async findAll(userId: number): Promise<Sensor[]> {
     try {
       return await Sensor.findAll({
@@ -54,11 +63,9 @@ export class SensorsService {
   async delete(userId: number, sensorId: number): Promise<boolean> {
     try {
       const sensor = await Sensor.findByPk(sensorId, {
-        include: [{ 
-          model: User,
-          as: 'members'
-        }]
+        include: [{ model: User, as: 'members' }]
       })
+
       if (!sensor) {
         throw new NotFoundException('Sensor not found')
       }
@@ -66,12 +73,13 @@ export class SensorsService {
       if (sensor.ownerId !== userId) {
         throw new UnauthorizedException('You are not authorized to delete this sensor')
       }
-
+      
       await sensor.$remove('members', userId)
-      this.sensorGateway.delete(userId.toString(), { id: sensor.id })
+      this.sensorGateway.delete(String(userId), { id: sensor.id })
 
-      if (sensor.members.length <= 0) {
-        this.deinit(sensor.ip)
+      const membersCount = await sensor.$count('members')
+      if (membersCount <= 0) {
+        this.deinit()
       }
 
       return true
@@ -92,7 +100,7 @@ export class SensorsService {
       }
 
       await sensor.update({ ...dto })
-      this.sensorGateway.update(userId.toString(), { id: sensor.id })
+      this.sensorGateway.update(String(userId), { id: sensor.id })
 
       return sensor
     } catch (error) {
@@ -102,13 +110,9 @@ export class SensorsService {
 
   async create(userId: number, dto: CreateSensorDTO): Promise<Sensor> {
     try {
-      const { data: { mac } } = await this.init(dto.ip)
-
-      if (!mac) {
-        throw new NotFoundException('Failed to connect to the sensor')
-      }
+      await this.init(dto.mac)
   
-      const sensor = await Sensor.findOne({ where: { ip: dto.ip } })
+      const sensor = await Sensor.findOne({ where: { mac: dto.mac } })
   
       if (sensor) {
         if (sensor.ownerId !== userId) {
@@ -119,13 +123,13 @@ export class SensorsService {
 
         const newSensor = await sensor.update({ ...dto })
         if (newSensor) {
-          this.sensorGateway.create(userId.toString(), { id: sensor.id })
+          this.sensorGateway.create(String(userId), { id: sensor.id })
         }
 
         return newSensor
       }
       
-      const newSensor = await Sensor.create({ mac: mac, ownerId: userId, ...dto })
+      const newSensor = await Sensor.create({ ownerId: userId, ...dto })
       await newSensor.$add('members', userId)
 
       return newSensor
@@ -182,7 +186,7 @@ export class SensorsService {
     }
   }
 
-  private async init(ip: string) {
+  private async init(mac: string) {
     const params = {
       endpoint_url: this.configService.get('sensor.endpointUrl'),
       platform: this.configService.get('sensor.platform')
@@ -192,13 +196,13 @@ export class SensorsService {
       .setData('http://51.124.188.239:3000/api/sensor-queue|test_windows')
       .build()
 
-    this.mqttService.publish(`sensor/8c:19:33:67:cf:9f/init`, record.data)
-    
-    return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params, { timeout: 3_000 })
+    this.mqttService.emit(`sensor/72:e5:ca:95:2a:54/init`, record.data)
+    // return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params, { timeout: 3_000 })
   }
   
-  private async deinit(ip: string) {
-    this.mqttService.publish(`sensor/8c:19:33:67:cf:9f/deinit`, 'deinit')
+  private async deinit() {
+    console.log("DEINIT [72:e5:ca:95:2a:54]")
+    this.mqttService.emit(`sensor/72:e5:ca:95:2a:54/deinit`, 'deinit')
     
     // return await this.httpService.axiosRef.post(`http://${ip}:8000/api/deinit`)
   }

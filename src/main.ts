@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import { ConfigService } from '@nestjs/config'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { AppModule } from '@/modules/app/app.module'
-import { MicroserviceOptions, Transport } from '@nestjs/microservices'
-import { MqttModule } from './modules/sensor/mqtt/mqtt.module'
-import { ConfigService } from '@nestjs/config'
+import { MqttModule } from '@/modules/mqtt/mqtt.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

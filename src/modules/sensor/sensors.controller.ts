@@ -23,6 +23,12 @@ export class SensorsController {
   constructor(private readonly sensorsService: SensorsService) {}
 
   @UseGuards(JwtGuard)
+  @Get('templates')
+  getTemplates() {
+    return this.sensorsService.getTemplates()
+  }
+  
+  @UseGuards(JwtGuard)
   @Get()
   findAll(@Req() { user }) {
     return this.sensorsService.findAll(user.id)
