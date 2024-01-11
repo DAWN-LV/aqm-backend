@@ -14,7 +14,7 @@ export default () => ({
       port: parseInt(process.env.INFLUX_DB_PORT, 10) || 12528,
       protocol: process.env.INFLUX_DB_PROTOCOL,
       database: process.env.INFLUX_DB_NAME,
-      username: process.env.INFLUX_DB_USER,
+      user: process.env.INFLUX_DB_USER,
       password: process.env.INFLUX_DB_PASSWORD,
     },
     postgres: {
@@ -27,4 +27,10 @@ export default () => ({
       password: process.env.REDIS_DB_PASSWORD,
     },
   },
+  mqtt: {
+    host: process.env.MQTT_HOST,
+    port: parseInt(process.env.MQTT_PORT, 10) || 1883,
+    user: process.env.MQTT_USER,
+    password: process.env.MQTT_PASSWORD,
+  }
 })

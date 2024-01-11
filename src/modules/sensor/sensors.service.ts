@@ -9,7 +9,8 @@ import { SensorGateway } from '@/modules/sensor/gateways/sensor.gateway'
 import { CreateSensorDTO } from '@/modules/sensor/dto/create-sensor.dto'
 import { UpdateSensorDTO } from '@/modules/sensor/dto/update-sensor.dto'
 import { InfluxdbService } from '@/modules/influxdb/influxdb.service'
-import { AxiosResponse } from 'axios'
+import { MqttService } from './mqtt/mqtt.service'
+import { MqttRecordBuilder } from '@nestjs/microservices'
 
 @Injectable()
 export class SensorsService {
@@ -17,7 +18,8 @@ export class SensorsService {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
     private readonly sensorGateway: SensorGateway,
-    private readonly influxdbService: InfluxdbService
+    private readonly influxdbService: InfluxdbService,
+    private readonly mqttService: MqttService
   ) {}
 
   async findAll(userId: number): Promise<Sensor[]> {
@@ -186,10 +188,18 @@ export class SensorsService {
       platform: this.configService.get('sensor.platform')
     }
 
+    const record = new MqttRecordBuilder()
+      .setData('http://51.124.188.239:3000/api/sensor-queue|test_windows')
+      .build()
+
+    this.mqttService.publish(`sensor/8c:19:33:67:cf:9f/init`, record.data)
+    
     return await this.httpService.axiosRef.post<{ mac: string }>(`http://${ip}:8000/api/init`, params, { timeout: 3_000 })
   }
-
+  
   private async deinit(ip: string) {
-    return await this.httpService.axiosRef.post(`http://${ip}:8000/api/deinit`)
+    this.mqttService.publish(`sensor/8c:19:33:67:cf:9f/deinit`, 'deinit')
+    
+    // return await this.httpService.axiosRef.post(`http://${ip}:8000/api/deinit`)
   }
 }

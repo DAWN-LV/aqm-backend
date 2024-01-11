@@ -59,7 +59,7 @@ export class SensorDataQueueConsumer {
 
   @OnQueueStalled()
   onStalled(job: Job) {
-    console.log(`Job has been marked as stalled: job = `, job)
+    console.log(`Job has been marked as stalled: jobId = `, job.id)
   }
 
   @OnQueueFailed()

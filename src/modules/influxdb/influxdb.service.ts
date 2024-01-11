@@ -14,7 +14,7 @@ export class InfluxdbService {
       port: this.configService.get('db.influx.port'),
       protocol: this.configService.get('db.influx.protocol'),
       database: this.configService.get('db.influx.database'),
-      username: this.configService.get('db.influx.username'),
+      username: this.configService.get('db.influx.user'),
       password: this.configService.get('db.influx.password'),
       schema: [testSchema],
     })
