@@ -145,12 +145,14 @@ export class SensorsService {
       const now = Date.now() / 1000
       const aggregation = this.getAggregation(now - from, now - to)
 
+      console.log('sensor = ', sensor)
+
       const query = `
         select
           mean(value) as avg,
           min(value) as min,
           max(value) as max
-        from ${sensor.type} 
+        from ${sensor.dataValues.type} 
         where mac = '${sensor.dataValues.mac}'
           and time > now() - ${from}s
           and time < now() - ${to}s
@@ -158,7 +160,11 @@ export class SensorsService {
         fill(none)
         order by time desc
       `
+      console.log('query = ', query)
+
       const res = await this.influxdbService.read<{ time: string, avg: string, min: number, max: number }>(query, false)
+
+      console.log('res = ', res)
 
       return res.map(data => ([
         new Date(data.time).getTime(),
