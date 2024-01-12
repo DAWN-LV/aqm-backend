@@ -22,7 +22,7 @@ export class SensorGateway {
     this.server.emit('SENSOR', { type: "DELETE", data })
   }
 
-  updateData(data: { [key: string]: { value: number, ts: number } }) {
-    this.server.emit('SENSOR', { type: "DATA:UPDATE", data })
-  }
+  // updateData(data: { [key: string]: { value: number, ts: number } }) {
+  //   this.server.emit('SENSOR', { type: "DATA:UPDATE", data })
+  // }
 }
