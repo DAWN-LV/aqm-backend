@@ -22,7 +22,7 @@ export class MqttController {
     
     try {
       const sensor = await Sensor.findOne({ where: { mac: mac } })
-      const ip = ipExternal === 'None' ? ipExternal : sensor.ip
+      const ip = ipExternal === 'None' ? sensor.ip : ipExternal
 
       if (sensor) {
         await sensor.update({ ip, status: status })
