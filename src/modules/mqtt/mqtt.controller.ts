@@ -24,6 +24,7 @@ export class MqttController {
             const sensor = await Sensor.findOne({ where: { mac: mac } })
 
             if (sensor && (sensor.ip !== ipExternal || sensor.status !== status)) {
+                console.log(`Updated mac=${mac} ip=${sensor.ip} => ${ipExternal}; status: ${sensor.status} => ${status}`)
                 await sensor.update({ ip: ipExternal, status: status })
                 this.sensorGateway.update({ id: sensor.id })
             }
