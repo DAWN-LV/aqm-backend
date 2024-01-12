@@ -27,6 +27,24 @@ export class SensorsController {
   getTemplates() {
     return this.sensorsService.getTemplates()
   }
+
+  @UseGuards(JwtGuard)
+  @Post(':mac/play')
+  play(@Param('mac') mac: string) {
+    return this.sensorsService.play(mac)
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':mac/pause')
+  pause(@Param('mac') mac: string) {
+    return this.sensorsService.pause(mac)
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':mac/restart')
+  restart(@Param('mac') mac: string) {
+    return this.sensorsService.restart(mac)
+  }
   
   @UseGuards(JwtGuard)
   @Get()

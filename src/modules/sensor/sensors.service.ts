@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 
 import { Sensor } from '@/modules/sensor/models/sensor.model'
 import { User } from '@/modules/user/models/user.model'
@@ -21,6 +20,30 @@ export class SensorsService {
     private readonly mqttService: MqttService
   ) {}
   
+  play(mac: string) {
+    try {
+      this._init(mac)
+    } catch (error) {
+      throw new BadRequestException(`Error in playing: ${ error.message }`)
+    }
+  }
+
+  pause(mac: string) {
+    try {
+      this._deinit(mac)
+    } catch (error) {
+      throw new BadRequestException(`Error in pausing: ${ error.message }`)
+    }
+  }
+
+  restart(mac: string) {
+    try {
+      this._restart(mac)
+    } catch (error) {
+      throw new BadRequestException(`Error in pausing: ${ error.message }`)
+    }
+  }
+
   getTemplates() {
     try {
       return templates
@@ -77,7 +100,7 @@ export class SensorsService {
 
       const membersCount = await sensor.$count('members')
       if (membersCount <= 0) {
-        this.deinit(sensor.mac)
+        this._deinit(sensor.mac)
       }
 
       return true
@@ -108,7 +131,7 @@ export class SensorsService {
 
   async create(userId: number, dto: CreateSensorDTO): Promise<Sensor> {
     try {
-      await this.init(dto.mac)
+      await this._init(dto.mac)
   
       const sensor = await Sensor.findOne({ where: { mac: dto.mac } })
       if (sensor) {
@@ -183,7 +206,7 @@ export class SensorsService {
     }
   }
 
-  private async init(mac: string) {
+  private async _init(mac: string) {
     const record = new MqttRecordBuilder()
       .setData('http://51.124.188.239:3000/api/sensor-queue|test_windows')
       .build()
@@ -191,7 +214,11 @@ export class SensorsService {
     this.mqttService.emit(`sensor/${mac}/init`, record.data)
   }
   
-  private async deinit(mac: string) {
+  private async _deinit(mac: string) {
     this.mqttService.emit(`sensor/${mac}/deinit`, 'deinit')
+  }
+
+  private async _restart(mac: string) {
+    this.mqttService.emit(`sensor/${mac}/restart`, 'restart')
   }
 }
